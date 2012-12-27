@@ -3,6 +3,9 @@
 # virtualenv
 venv
 
+# OS X
+*.DS_Store
+
 # C extensions
 *.so
 
