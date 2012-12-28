@@ -148,6 +148,8 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
 
 @app.route('/<int:width>x<int:height>')
 def show_image_width_height(width, height):
+  width = min([width, 5000])
+  height = min([height, 5000])
   caption = request.args.get('text', '')
   bg_color = hex_to_rgb(request.args.get('bg_color', '#666666'))
   text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
@@ -157,6 +159,8 @@ def show_image_width_height(width, height):
 
 @app.route('/<int:width>x<int:height>/<caption>')
 def show_image_width_height_caption(width, height, caption):
+  width = min([width, 5000])
+  height = min([height, 5000])
   bg_color = hex_to_rgb(request.args.get('bg_color', '#666666'))
   text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
 
