@@ -167,9 +167,9 @@ def show_image_width_height_caption(width, height, caption):
   return generate(width, height, caption, bg_color, text_color)
 
 
-@app.route('/test')
-def test():
-  return render_template('./test.html')
+@app.route('/examples')
+def examples():
+  return render_template('./examples.html')
 
 
 if __name__ == "__main__":

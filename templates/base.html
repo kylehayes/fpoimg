@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>FPOImg.com smoke test</title>
+  <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.css" />
+  <script src="/static/lib/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">FPOImg.com</a>
+        <ul class="nav">
+          <li class="active"><a href="/examples">Examples</a></li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- end navbar -->
+
+  <div class="container" style="margin-top: 60px;">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
