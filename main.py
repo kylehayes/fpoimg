@@ -123,16 +123,17 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
   size = (width,height)       # size of the image to create
   im = Image.new('RGB', size, bg_color) # create the image
   draw = ImageDraw.Draw(im)   # create a drawing object
-  text_line_pad = 0
+  DEFAULT_DIM_SIZE = 50
+  DEFAULT_CAPTION_SIZE = 30
 
-  font = ImageFont.truetype("Arial.ttf", 35) # set the font
+  text_line_pad = 0
 
   dim_text = str(width) + "x" + str(height)
 
-  text_lines = [(dim_text, "ArialBlack.ttf", 78)]
+  text_lines = [(dim_text, "ArialBlack.ttf", DEFAULT_DIM_SIZE)]
 
   if(caption):
-    text_lines += [(caption, "Arial.ttf", 35,)]
+    text_lines += [(caption, "Arial.ttf", DEFAULT_CAPTION_SIZE)]
 
   text_layouts = layout_text(width, height, 0, text_lines)
 
