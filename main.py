@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import abort, send_file, request, render_template
 from PIL import Image, ImageDraw, ImageFont
+from StringIO import StringIO
 import os
 
 app = Flask(__name__)
@@ -10,7 +11,6 @@ def hello():
     return "Hello World!"
 
 def serve_pil_image(pil_img):
-  from StringIO import StringIO
   img_io = StringIO()
   pil_img.save(img_io, 'PNG', quality=70)
   img_io.seek(0)
@@ -148,8 +148,16 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
 @app.route('/<int:width>x<int:height>')
 def show_image_width_height(width, height):
   caption = request.args.get('text', '')
-  bg_color = hex_to_rgb(request.args.get('bg_color', ''))
-  text_color = hex_to_rgb(request.args.get('text_color', ''))
+  bg_color = hex_to_rgb(request.args.get('bg_color', '#666666'))
+  text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
+
+  return generate(width, height, caption, bg_color, text_color)
+
+
+@app.route('/<int:width>x<int:height>/<caption>')
+def show_image_width_height_caption(width, height, caption):
+  bg_color = hex_to_rgb(request.args.get('bg_color', '#666666'))
+  text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
 
   return generate(width, height, caption, bg_color, text_color)
 
