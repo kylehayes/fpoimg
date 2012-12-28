@@ -157,8 +157,8 @@ def show_image_width_height(width, height):
   width = min([width, 5000])
   height = min([height, 5000])
   caption = request.args.get('text', '')
-  bg_color = hex_to_rgb(request.args.get('bg_color', '#666666'))
-  text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
+  bg_color = hex_to_rgb(request.args.get('bg_color', '#C7C7C7'))
+  text_color = hex_to_rgb(request.args.get('text_color', '#8F8F8F'))
 
   return generate(width, height, caption, bg_color, text_color)
 
@@ -167,8 +167,8 @@ def show_image_width_height(width, height):
 def show_image_width_height_caption(width, height, caption):
   width = min([width, 5000])
   height = min([height, 5000])
-  bg_color = hex_to_rgb(request.args.get('bg_color', '#666666'))
-  text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
+  bg_color = hex_to_rgb(request.args.get('bg_color', '#C7C7C7'))
+  text_color = hex_to_rgb(request.args.get('text_color', '#8F8F8F'))
 
   return generate(width, height, caption, bg_color, text_color)
 
