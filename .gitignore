@@ -39,4 +39,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+<<<<<<< HEAD
 
+=======
+>>>>>>> cceac8491f84e860852ee0e09a4100625a4a37a4
