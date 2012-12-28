@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>FPOImg.com smoke test</title>
+  <title>FPOImg.com - {% block title %}Home{% endblock %}</title>
   <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
   <script src="/static/lib/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
@@ -11,7 +12,8 @@
       <div class="container">
         <a class="brand" href="/">FPOImg.com</a>
         <ul class="nav">
-          <li class="active"><a href="/examples">Examples</a></li>
+          <li class="{% block nav_home %}{% endblock %}"><a href="/">Home</a></li>
+          <li class="{% block nav_examples %}{% endblock %}"><a href="/examples">Examples</a></li>
         </ul>
       </div>
     </div>
@@ -20,5 +22,23 @@
   <div class="container" style="margin-top: 60px;">
     {% block content %}{% endblock %}
   </div>
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="span6">
+          <a href="http://flask.pocoo.org/"><img
+             src="http://flask.pocoo.org/static/badges/powered-by-flask-s.png"
+             border="0"
+             alt="powered by Flask"
+             title="powered by Flask"></a>
+             and
+             <a href="http://www.heroku.com"><img src="http://logos.heroku.com/images/heroku-logo-light-88x31.png" border="0" alt="powered by Heroku" title="powered by Heroku" /></a>
+        </div>
+        <div class="span6">
+          <p>This service is provided free by <a href="http://twitter.com/kylehayes">Kyle Hayes</a>. Fork it at <a href="http://github.com/kylehayes/fpoimg">GitHub</a>.
+          <br/>&copy;2012 Kyle Hayes</p>
+        </div>
+    </div>
+  </footer>
 </body>
 </html>

@@ -7,8 +7,14 @@ import os
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return "Hello World!"
+def home():
+  return render_template('./home.html')
+
+
+@app.route('/examples')
+def examples():
+  return render_template('./examples.html')
+
 
 def serve_pil_image(pil_img):
   img_io = StringIO()
@@ -165,11 +171,6 @@ def show_image_width_height_caption(width, height, caption):
   text_color = hex_to_rgb(request.args.get('text_color', '#cccccc'))
 
   return generate(width, height, caption, bg_color, text_color)
-
-
-@app.route('/examples')
-def examples():
-  return render_template('./examples.html')
 
 
 if __name__ == "__main__":

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<h1>Welcome!</h1>
+<p>FPO means <em>For Placement Only</em> and is commonly used for providing a placeholder image where actual content will reside in a publication, website, or similar.</p>
+
+<p>The goal of FPOImg.com is simple—-provide an easy way to generate placeholder images for your designs whether it be
+for web development, print, or a school paper</p>
+<p>Using FPOImg.com is simple, append the size of an image you would like to generate after fpoimg.com/ like so:</p>
+
+<p><code>http://fpoimg.com/250x300</code></p>
+
+<p>That will generate the following image:</p>
+
+<img src="/250x300"><br/>
+The code for that image is <code>&lt;img src="http://fpoimg.com/250x300"&gt;</code>
+
+<p>Alternatively, you can add descriptive text to the image to describe what the placeholder is for:</p>
+<p><code>http://fpoimg.com/300x300?text=Advertisement</code></p>
+
+<p>That will generate the following image:</p>
+<img src="/300x300?text=Advertisement"><br/>
+The code for that image is <code>&lt;img src="http://fpoimg.com/300x300?text=Advertisement"&gt;</code>
+{% endblock %}
