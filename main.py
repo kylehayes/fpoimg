@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import abort, send_file, request, render_template
 from PIL import Image, ImageDraw, ImageFont
-import pdb
+import os
 
 app = Flask(__name__)
 
@@ -160,5 +160,7 @@ def test():
 
 
 if __name__ == "__main__":
-  app.debug = True
-  app.run()
+  port = int(os.environ.get('PORT', 5000))
+  if port == 5000:
+    app.debug = True
+  app.run(host='0.0.0.0', port=port)
