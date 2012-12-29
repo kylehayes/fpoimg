@@ -3,6 +3,9 @@
 # virtualenv
 venv
 
+# foreman
+.env
+
 # OS X
 *.DS_Store
 

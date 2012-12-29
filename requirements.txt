@@ -1,6 +1,7 @@
 Flask==0.9
 Jinja2==2.6
+MySQL-python==1.2.4c1
 PIL==1.1.7
 Werkzeug==0.8.3
-distribute==0.6.27
+distribute==0.6.32
 wsgiref==0.1.2

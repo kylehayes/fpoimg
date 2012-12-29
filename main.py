@@ -3,6 +3,8 @@ from flask import abort, send_file, request, render_template
 from PIL import Image, ImageDraw, ImageFont
 from StringIO import StringIO
 import os
+import _mysql
+import datetime
 
 app = Flask(__name__)
 
@@ -157,20 +159,34 @@ def show_image_width_height(width, height):
   width = min([width, 5000])
   height = min([height, 5000])
   caption = request.args.get('text', '')
-  bg_color = hex_to_rgb(request.args.get('bg_color', '#C7C7C7'))
-  text_color = hex_to_rgb(request.args.get('text_color', '#8F8F8F'))
-
-  return generate(width, height, caption, bg_color, text_color)
+  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
+  text_color_hex = request.args.get('text_color', '#8F8F8F')
+  #track(width, height, caption, bg_color_hex, text_color_hex, request.remote_addr)
+  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
 
 
 @app.route('/<int:width>x<int:height>/<caption>')
 def show_image_width_height_caption(width, height, caption):
   width = min([width, 5000])
   height = min([height, 5000])
-  bg_color = hex_to_rgb(request.args.get('bg_color', '#C7C7C7'))
+  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
   text_color = hex_to_rgb(request.args.get('text_color', '#8F8F8F'))
+  text_color_hex = request.args.get('text_color', '#8F8F8F')
+  #track(width, height, caption, bg_color_hex, text_color_hex, request.remote_addr)
+  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
 
-  return generate(width, height, caption, bg_color, text_color)
+
+def track(width, height, caption, bg_color, text_color, ip_address):
+  db_host = os.environ.get('DB_HOST', '')
+  db_user = os.environ.get('DB_USER', '')
+  db_passwd = os.environ.get('DB_PASSWD', '')
+  db_name = os.environ.get('DB_NAME', '')
+  #Define our connection string
+  db=_mysql.connect(host=db_host, user=db_user, passwd=db_passwd, db=db_name)
+  db.query("""
+    INSERT INTO stats(created_date, width, height, caption, bg_color, text_color, ip_address)
+    VALUES ('%s', %i, %i, '%s', '%s', '%s', '%s')
+  """ % (datetime.datetime.now(), width, height, caption, bg_color, text_color, ip_address))
 
 
 if __name__ == "__main__":
