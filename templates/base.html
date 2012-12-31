@@ -3,18 +3,25 @@
 <head>
   <title>FPOImg.com - {% block title %}Home{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap-responsive.min.css" />
+
+  {% block stylesheets %}
+  <link rel="stylesheet" href="/static/scripts/lib/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/scripts/lib/bootstrap/css/bootstrap-responsive.min.css" />
   <link rel="stylesheet" href="/static/css/styles.css" />
-  <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
+  {% endblock %}
+
+  {% block javascript %}
+  <script data-main="static/scripts/main" src="static/scripts/require-jquery.js"></script>
+  {% endblock %}
 </head>
-<body>
+<body data-page-id="{% block page_id %}default{% endblock %}">
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
         <a class="brand" href="/">FPOImg.com</a>
         <ul class="nav">
           <li class="{% block nav_home %}{% endblock %}"><a href="/">Home</a></li>
+          <li class="{% block nav_configurator %}{% endblock %}"><a href="/configurator">Configurator</a></li>
           <li class="{% block nav_examples %}{% endblock %}"><a href="/examples">Examples</a></li>
         </ul>
       </div>

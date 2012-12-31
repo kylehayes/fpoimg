@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Configurator{% endblock %}
+{% block nav_configurator %}active{% endblock %}
+{% block javascript %}
+  {{ super() }}
+{% endblock %}
+{% block page_id %}configurator{% endblock %}
+{% block content %}
+<h1>Configurator</h1>
+<hr />
+<div class="row">
+  <!-- uri -->
+  <div class="span12">
+    <form>
+      <div class="input-prepend input-append">
+        <span class="add-on">&lt;img src="</span>
+        <input id="uri" type="text" class="input-xxlarge" value="http://fpoimg.com"/>
+        <span class="add-on">"<span id="uri-width"> width="0"</span>
+        <span id="uri-height"> height="0"</span> /&gt;</span>
+      </div>
+    </form>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <!-- params -->
+  <div class="span4">
+    <form>
+      <input type="text" id="param-width" class="input-small" placeholder="width" /> x 
+      <input type="text" id="param-height" class="input-small" placeholder="height" /> pixels
+    </form>
+  </div>
+
+  <!-- preview -->
+  <div class="span8">
+    <img src="/500x500?text=preview&bg_color=cccccc&text_color=000000" />
+  </div>  
+</div>
+
+{% endblock %}

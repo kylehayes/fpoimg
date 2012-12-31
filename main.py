@@ -13,9 +13,33 @@ def home():
   return render_template('./home.html')
 
 
+@app.route('/configurator')
+def configurator():
+  return render_template('./configurator.html')
+
 @app.route('/examples')
 def examples():
   return render_template('./examples.html')
+
+
+@app.route('/<int:width>x<int:height>')
+def show_image_width_height(width, height):
+  width = min([width, 5000])
+  height = min([height, 5000])
+  caption = request.args.get('text', '')
+  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
+  text_color_hex = request.args.get('text_color', '#8F8F8F')
+  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
+
+
+@app.route('/<int:width>x<int:height>/<caption>')
+def show_image_width_height_caption(width, height, caption):
+  width = min([width, 5000])
+  height = min([height, 5000])
+  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
+  text_color = hex_to_rgb(request.args.get('text_color', '#8F8F8F'))
+  text_color_hex = request.args.get('text_color', '#8F8F8F')
+  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
 
 
 def serve_pil_image(pil_img):
@@ -153,25 +177,6 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
   
   return serve_pil_image(im)
 
-
-@app.route('/<int:width>x<int:height>')
-def show_image_width_height(width, height):
-  width = min([width, 5000])
-  height = min([height, 5000])
-  caption = request.args.get('text', '')
-  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
-  text_color_hex = request.args.get('text_color', '#8F8F8F')
-  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
-
-
-@app.route('/<int:width>x<int:height>/<caption>')
-def show_image_width_height_caption(width, height, caption):
-  width = min([width, 5000])
-  height = min([height, 5000])
-  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
-  text_color = hex_to_rgb(request.args.get('text_color', '#8F8F8F'))
-  text_color_hex = request.args.get('text_color', '#8F8F8F')
-  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
 
 
 if __name__ == "__main__":
