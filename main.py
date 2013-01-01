@@ -17,19 +17,21 @@ def home():
 def configurator():
   return render_template('./configurator.html')
 
+
 @app.route('/examples')
 def examples():
   return render_template('./examples.html')
 
 
+@app.route('/<int:square>')
+def show_image_square(square):
+  return show_image_width_height(square, square)
+
+
 @app.route('/<int:width>x<int:height>')
 def show_image_width_height(width, height):
-  width = min([width, 5000])
-  height = min([height, 5000])
   caption = request.args.get('text', '')
-  bg_color_hex = request.args.get('bg_color', '#C7C7C7')
-  text_color_hex = request.args.get('text_color', '#8F8F8F')
-  return generate(width, height, caption, hex_to_rgb(bg_color_hex), hex_to_rgb(text_color_hex))
+  return show_image_width_height_caption(width, height, caption)
 
 
 @app.route('/<int:width>x<int:height>/<caption>')
@@ -176,7 +178,6 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
   del draw # I'm done drawing so I don't need this anymore
   
   return serve_pil_image(im)
-
 
 
 if __name__ == "__main__":

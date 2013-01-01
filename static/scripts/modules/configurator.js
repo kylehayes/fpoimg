@@ -1,6 +1,17 @@
 require(["jquery", "lib/farbtastic/farbtastic"], function($) {
   $(function() {
 
+    var $pWidth = $('#param-width');
+    var $pHeight = $('#param-height');
+    var $pText = $('#param-text');
+    var $pBgColor = $('#param-bgcolor');
+    var $pTextColor = $('#param-textcolor');
+    var $uri = $('#uri');
+    var $pTextColor = $('#param-textcolor');
+    var $preview = $('#preview');
+    var $bgColorPicker = $('#bg-colorpicker');
+    var $textColorPicker = $('#text-colorpicker');
+
     var serializeParams = function(obj) {
       var compiled = [];
       for (key in obj) {
@@ -12,49 +23,70 @@ require(["jquery", "lib/farbtastic/farbtastic"], function($) {
     };
 
     var updateUri = function() {
-      var baseUrl = "http://fpoimg.com";
-      var width = $.trim($('#param-width').val()) || "";
-      var height = $.trim($('#param-height').val()) || "";
+      var baseUrl = "http://" + document.location.host;
+      var width = $.trim($pWidth.val()) || "";
+      var height = $.trim($pHeight.val()) || "";
       var wh = width || "";
           wh = height && wh ? wh + "x" + height : wh
-      var uri = wh ? baseUrl + "/" + wh : "/300x250?text=preview";
-      var args = serializeParams({
-        text: $('#param-text').val(),
-        bg_color: $('#param-bgcolor').val().replace('#', ''),
-        text_color: $('#param-textcolor').val().replace('#', '')
+      var uri = (wh ? "/" + wh : "");
+
+      var args = ""
+      if(wh) {
+        args = serializeParams({
+          text: $pText.val(),
+          bg_color: $pBgColor.val().replace('#', ''),
+          text_color: $pTextColor.val().replace('#', '')
+        });
+        uri += args ? "?" + args : "";
+      }
+      uri = uri ? baseUrl + uri : "";
+      $uri.val(uri);
+      $preview.attr('src', uri);
+    };
+
+    var setupListeners = function() {
+      // on colorpicker change, update corresponding text input
+      $bgColorPicker.farbtastic(function(value){
+        $pBgColor.val(value);  
       });
-      uri += args ? "?" + args : "";
-      
-      $('#uri').val(uri);
-      $('#preview').attr('src', uri);
+      $textColorPicker.farbtastic(function(value){
+        $pTextColor.val(value);  
+      });
+
+      // open the pickers when the text inputs are focused
+      $pBgColor.focus(function(){
+        $bgColorPicker.show('fast');
+      }).blur(function(){
+        $bgColorPicker.hide('fast');
+        updateUri();
+      });
+      $pTextColor.focus(function(){
+        $textColorPicker.show('fast');
+      }).blur(function(){
+        $textColorPicker.hide('fast');
+        updateUri();
+      });
+
+      // on param value changes, update the uri
+      $('.param').change(function(){updateUri();});
+
+      // iab select menu
+      $('#iab').change(function(){
+        var dim_txt = $(this).val().split(' - ');
+        var wh = dim_txt[0].split('x');
+        $pWidth.val(wh[0]);
+        $pHeight.val(wh[1]);
+        $pText.val(dim_txt[1]);
+        updateUri();
+      });
+
+    };
+
+    var init = function() {
+      setupListeners();
+      updateUri();
     }
-    $('#bg-colorpicker').farbtastic(function(value){
-      $('#param-bgcolor').val(value);  
-    });
-    $('#text-colorpicker').farbtastic(function(value){
-      $('#param-textcolor').val(value);  
-    });
-    $('#param-bgcolor').focus(function(){
-      $('#bg-colorpicker').css("display", "block");
-    }).blur(function(){
-      $('#bg-colorpicker').css("display", "none");
-      updateUri();
-    });
-    $('#param-textcolor').focus(function(){
-      $('#text-colorpicker').css("display", "block");
-    }).blur(function(){
-      $('#text-colorpicker').css("display", "none");
-      updateUri();
-    });
-    $('.param').change(function(){updateUri();});
-    $('#iab').change(function(){
-      var dim_txt = $(this).val().split(' - ');
-      var wh = dim_txt[0].split('x');
-      $('#param-width').val(wh[0]);
-      $('#param-height').val(wh[1]);
-      $('#param-text').val(dim_txt[1]);
-      updateUri();
-    });
-    updateUri();
+
+    init();
   });
 });
