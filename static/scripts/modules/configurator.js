@@ -11,6 +11,8 @@ require(["jquery", "lib/farbtastic/farbtastic"], function($) {
     var $preview = $('#preview');
     var $bgColorPicker = $('#bg-colorpicker');
     var $textColorPicker = $('#text-colorpicker');
+    var $uriWidth = $('#uri-width');
+    var $uriHeight = $('#uri-height');
 
     var serializeParams = function(obj) {
       var compiled = [];
@@ -42,6 +44,8 @@ require(["jquery", "lib/farbtastic/farbtastic"], function($) {
       uri = uri ? baseUrl + uri : "";
       $uri.val(uri);
       $preview.attr('src', uri);
+      $uriWidth.html(width);
+      $uriHeight.html(height);
     };
 
     var setupListeners = function() {
