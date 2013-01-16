@@ -8,3 +8,16 @@ footer {
 #uri {
   font-weight: bold;
 }
+
+.jumbotron {
+	text-align: center;
+}
+
+.jumbotron p {
+	font-size: 45px;
+	padding-top: 50px;
+}
+
+.jumbotron {
+	padding-top: 30px;
+}
