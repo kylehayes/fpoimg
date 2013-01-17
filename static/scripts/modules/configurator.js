@@ -37,8 +37,7 @@ require(["jquery", "lib/farbtastic/farbtastic"], function($) {
         args = serializeParams({
           text: $pText.val(),
           bg_color: $pBgColor.val().replace('#', ''),
-          text_color: $pTextColor.val().replace('#', ''),
-          c: 1 // try to track people using the configurator
+          text_color: $pTextColor.val().replace('#', '')
         });
         uri += args ? "?" + args : "";
       }
