@@ -162,7 +162,7 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
 
   text_line_pad = 0
 
-  dim_text = str(width) + "x" + str(height)
+  dim_text = str(width) + "×" + str(height)
 
   text_lines = [(dim_text, "ArialBlack.ttf", DEFAULT_DIM_SIZE)]
 
