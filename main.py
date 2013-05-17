@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import abort, send_file, request, render_template
+from flask import abort, send_file, request, render_template, redirect
 from PIL import Image, ImageDraw, ImageFont
 from StringIO import StringIO
 import os
@@ -17,6 +17,9 @@ def home():
 def generator():
   return render_template('./generator.html')
 
+@app.route('/configurator')
+def configurator():
+  return redirect('/generator', 301)
 
 @app.route('/examples')
 def examples():
