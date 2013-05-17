@@ -3,7 +3,7 @@ require(["jquery", "lib/bootstrap/js/bootstrap.min"], function($) {
         var App = {
           pageId: 'default',
           modules: {
-            'configurator': {}
+            'generator': {}
           }
         }
         App.pageId = $.trim($(this.body).data('page-id'));
