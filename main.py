@@ -13,9 +13,9 @@ def home():
   return render_template('./home.html')
 
 
-@app.route('/configurator')
-def configurator():
-  return render_template('./configurator.html')
+@app.route('/generator')
+def generator():
+  return render_template('./generator.html')
 
 
 @app.route('/examples')
