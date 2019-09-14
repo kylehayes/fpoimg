@@ -2,6 +2,7 @@ from flask import Flask
 from flask import abort, send_file, request, render_template, redirect
 from PIL import Image, ImageDraw, ImageFont
 import os
+import time
 import datetime
 import boto3
 import logging
@@ -220,7 +221,11 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
 
   del draw # I'm done drawing so I don't need this anymore
   
+  ts = time.time()
+  timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
   logData = {
+    "timestamp": timestamp,
     "width": width,
     "height": height,
     "caption": caption,
@@ -229,7 +234,7 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
     "referrer": request.referrer,
     "user_agent": request.user_agent
   }
-  writeAndUploadCSV(logData, ["width", "height", "caption", "bg_color", "text_color", "referrer", "user_agent"])
+  writeAndUploadCSV(logData, ["timestamp", "width", "height", "caption", "bg_color", "text_color", "referrer", "user_agent"])
 
   return serve_pil_image(im)
 
