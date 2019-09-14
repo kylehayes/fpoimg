@@ -179,7 +179,7 @@ def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
   upload_file(
     buffer,
     os.environ['FPOIMG_AWS_BUCKET_LOGS'],
-    "queries/{year}/{month}/{day}/{hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
+    "queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
   )
 
 
