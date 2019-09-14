@@ -1,10 +1,14 @@
 from flask import Flask
 from flask import abort, send_file, request, render_template, redirect
 from PIL import Image, ImageDraw, ImageFont
-from StringIO import StringIO
 import os
-import _mysql
 import datetime
+import boto3
+import logging
+import csv
+import io
+import textwrap
+from botocore.exceptions import ClientError
 
 app = Flask(__name__)
 
@@ -48,7 +52,7 @@ def show_image_width_height_caption(width, height, caption):
 
 
 def serve_pil_image(pil_img):
-  img_io = StringIO()
+  img_io = io.BytesIO()
   pil_img.save(img_io, 'PNG', quality=70)
   img_io.seek(0)
   return send_file(img_io, mimetype='image/png')
@@ -60,9 +64,17 @@ def hex_to_rgb(value):
   http://stackoverflow.com/questions/214359/converting-hex-color-to-rgb-and-vice-versa
   '''
   if len(value.strip()) != 0:
-    value = value.lstrip('#')
-    lv = len(value)
-    return tuple(int(value[i:i+lv/3], 16) for i in range(0, lv, lv/3))
+    if value[0] == '#':
+        value = value[1:]
+
+    len_value = len(value)
+
+    if len_value not in [3, 6]:
+        raise ValueError('Incorect a value hex {}'.format(value))
+
+    if len_value == 3:
+        value = ''.join(i * 2 for i in value)
+    return tuple(int(i, 16) for i in textwrap.wrap(value, 2))
   else:
     return None
 
@@ -155,6 +167,33 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
   else:
     return []
 
+def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
+  new_csvfile = io.StringIO()
+  wr = csv.DictWriter(new_csvfile, fieldnames=fieldnames)
+  wr.writeheader()
+  wr.writerow(data)
+  buffer = io.BytesIO(new_csvfile.getvalue().encode())
+  today = datetime.date.today()
+  year = today.year
+  month = today.month
+  day = today.day
+  ts = datetime.datetime.now().timestamp()
+  upload_file(buffer, "fpoimg-logs", f"queries/year={year}/month={month}/day={day}/{ts}.csv")
+
+
+def upload_file(file, bucket, object_name):
+  s3_client = boto3.resource(
+    's3',
+    aws_access_key_id=os.environ['FPOIMG_AWS_ACCESS_KEY_ID'],
+    aws_secret_access_key=os.environ['FPOIMG_AWS_SECRET_ACCESS_KEY'],
+  )
+  try:
+    s3_client.Object(bucket, object_name).put(Body=file.getvalue())
+  except ClientError as e:
+    logging.error(e)
+    return False
+  return True
+
 
 def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
   size = (width,height)       # size of the image to create
@@ -180,6 +219,17 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
 
   del draw # I'm done drawing so I don't need this anymore
   
+  logData = {
+    "width": width,
+    "height": height,
+    "caption": caption,
+    "bg_color": bg_color,
+    "text_color": text_color,
+    "referrer": request.referrer,
+    "user_agent": request.user_agent
+  }
+  writeAndUploadCSV(logData, ["width", "height", "caption", "bg_color", "text_color", "referrer", "user_agent"])
+
   return serve_pil_image(im)
 
 
