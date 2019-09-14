@@ -173,12 +173,13 @@ def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
   wr.writeheader()
   wr.writerow(data)
   buffer = io.BytesIO(new_csvfile.getvalue().encode())
-  today = datetime.date.today()
-  year = today.year
-  month = today.month
-  day = today.day
   ts = datetime.datetime.now().timestamp()
-  upload_file(buffer, os.environ['FPOIMG_AWS_BUCKET_LOGS'], f"queries/year={year}/month={month}/day={day}/{ts}.csv")
+  now = datetime.datetime.now()
+  upload_file(
+    buffer,
+    os.environ['FPOIMG_AWS_BUCKET_LOGS'],
+    "queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
+  )
 
 
 def upload_file(file, bucket, object_name):
