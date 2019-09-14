@@ -169,7 +169,7 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
 
 def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
   new_csvfile = io.StringIO()
-  wr = csv.DictWriter(new_csvfile, fieldnames=fieldnames)
+  wr = csv.DictWriter(new_csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
   wr.writeheader()
   wr.writerow(data)
   buffer = io.BytesIO(new_csvfile.getvalue().encode())
@@ -178,7 +178,7 @@ def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
   month = today.month
   day = today.day
   ts = datetime.datetime.now().timestamp()
-  upload_file(buffer, "fpoimg-logs", f"queries/year={year}/month={month}/day={day}/{ts}.csv")
+  upload_file(buffer, os.environ['FPOIMG_AWS_BUCKET_LOGS'], f"queries/year={year}/month={month}/day={day}/{ts}.csv")
 
 
 def upload_file(file, bucket, object_name):
