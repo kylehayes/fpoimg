@@ -176,25 +176,30 @@ def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
   buffer = io.BytesIO(new_csvfile.getvalue().encode())
   ts = datetime.datetime.now().timestamp()
   now = datetime.datetime.now()
-  upload_file(
-    buffer,
-    os.environ['FPOIMG_AWS_BUCKET_LOGS'],
-    "queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
-  )
+  logs_bucket = os.environ.get('FPOIMG_AWS_BUCKET_LOGS', None)
+  if logs_bucket:
+    upload_file(
+      buffer,
+      logs_bucket,
+      "queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
+    )
 
 
 def upload_file(file, bucket, object_name):
-  s3_client = boto3.resource(
-    's3',
-    aws_access_key_id=os.environ['FPOIMG_AWS_ACCESS_KEY_ID'],
-    aws_secret_access_key=os.environ['FPOIMG_AWS_SECRET_ACCESS_KEY'],
-  )
-  try:
-    s3_client.Object(bucket, object_name).put(Body=file.getvalue())
-  except ClientError as e:
-    logging.error(e)
-    return False
-  return True
+  access_key_id = os.environ.get('FPOIMG_AWS_ACCESS_KEY_ID', '')
+  access_key = os.environ.get('FPOIMG_AWS_SECRET_ACCESS_KEY', '')
+  if access_key and access_key_id:
+    s3_client = boto3.resource(
+      's3',
+      aws_access_key_id=access_key_id,
+      aws_secret_access_key=access_key,
+    )
+    try:
+      s3_client.Object(bucket, object_name).put(Body=file.getvalue())
+    except ClientError as e:
+      logging.error(e)
+      return False
+    return True
 
 
 def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
