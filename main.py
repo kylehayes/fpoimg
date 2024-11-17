@@ -15,8 +15,8 @@ from flask_s3 import FlaskS3
 
 app = Flask(__name__)
 
-GA_TRACKING_ID = os.environ['GA_TRACKING_ID']
-app.config['FLASKS3_BUCKET_NAME'] = os.environ['FPOIMG_AWS_BUCKET']
+GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID')
+app.config['FLASKS3_BUCKET_NAME'] = os.environ.get('FPOIMG_AWS_BUCKET')
 app.config['FLASKS3_FILEPATH_HEADERS'] = {
     r'.css$': {
         'Content-Type': 'text/css',
@@ -299,6 +299,6 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
 
 if __name__ == "__main__":
   port = int(os.environ.get('PORT', 5000))
-  if port == 5000:
+  if port == 3000:
     app.debug = True
   app.run(host='0.0.0.0', port=port)
