@@ -2,9 +2,16 @@
 
 # virtualenv
 venv
+env-*
 
 # foreman
 .env
+
+# Jetbrains
+.idea
+
+# GCP
+app.yaml
 
 # OS X
 *.DS_Store
@@ -41,3 +48,4 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.vscode
