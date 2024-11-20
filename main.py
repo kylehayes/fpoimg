@@ -4,14 +4,14 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import time
 import datetime
-import boto3
-import logging
-import csv
+# import boto3
+# import logging
+# import csv
 import io
 import textwrap
 import requests
-from botocore.exceptions import ClientError
-from flask_s3 import FlaskS3
+# from botocore.exceptions import ClientError
+# from flask_s3 import FlaskS3
 
 app = Flask(__name__)
 
@@ -25,7 +25,7 @@ app.config['FLASKS3_FILEPATH_HEADERS'] = {
         'Content-Type': 'text/javascript',
     }
 }
-s3 = FlaskS3(app)
+# s3 = Flask(app)
 
 
 def track_event(category, action, label=None, value=0, referrer=555):
@@ -119,123 +119,109 @@ def hex_to_rgb(value):
 
 def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
   '''
-  This method is most likely _not_ optimized. I certainly welcome any refactoring that
-  will either make it faster or do it better
+  Layouts text on a given canvas size by adjusting font size if necessary.
 
-  given canvas_width, canvas_height, line_spacing, [(text1, ttf1, max_point1), (text2, ttf2, max_point2), ...]
-  return [(font1, pos1), (font2, pos2), ...]
+  Parameters:
+  canvas_width, canvas_height: Dimensions of the canvas
+  line_spacing: Space between lines
+  list_of_texts: List of tuples [(text1, ttf1, max_point1), (text2, ttf2, max_point2), ...]
+
+  Returns:
+  A list of tuples: [(text, font, (x, y)), ...]
   '''
-  target_reduction = 0.8 # the amount to reduce by if the text is too large
-
-
-  if len(list_of_texts):
-    ratios = []
-    text_heights = []
-    text_widths = []
-    fonts = []
-    text_sizes = []
-    for text_attr in list_of_texts:
-      text, ttf, max_point = text_attr
-      font = ImageFont.truetype(ttf, max_point)
-      fonts += [font]
-      text_size = font.getsize(text)
-      width, height = text_size
-      text_sizes += [tuple(text_size)]
-      
-      #pdb.set_trace()
-
-      text_heights += [float(height)]
-      text_widths += [float(width)]
-
-    total_text_height = sum(text_heights)
-    max_text_width = max(text_widths)
-
-    ratios = [h/total_text_height for h in text_heights]
-
-
-    # the height needs to be reduced because it won't fit in the current canvas
-    if (total_text_height * ((1-target_reduction)+1) ) > canvas_height:
-      target_height = canvas_height * target_reduction
-      total_reduction = target_height / total_text_height # this is what the point size needs to be reduced by
-      text_heights = []
-      fonts = []
-      text_sizes = []
-      
-      for idx, text_attr in enumerate(list_of_texts):
-        text, ttf, max_point = text_attr
-        new_font = ImageFont.truetype(ttf, int( total_reduction * max_point) )
-        fonts += [new_font]
-        text_size = new_font.getsize(text)
-        width, height = text_size
-        text_sizes += [text_size]
-        text_heights += [height]
-
-    # the width needs to be reduced because it won't fit in the current canvas
-    if (max_text_width * ((1-target_reduction)+1) ) > canvas_width:
-      target_width = canvas_width * target_reduction
-      total_reduction = target_width / max_text_width # this is what the point size needs to be reduced by
-      text_heights = []
-      fonts = []
-      text_sizes = []
-      
-      for idx, text_attr in enumerate(list_of_texts):
-        text, ttf, max_point = text_attr
-        new_font = ImageFont.truetype(ttf, int( total_reduction * max_point) )
-        fonts += [new_font]
-        text_size = new_font.getsize(text)
-        width, height = text_size
-        text_sizes += [text_size]
-        text_heights += [height]
-
-
-    total_text_height = sum(text_heights)
-
-    first_top = (canvas_height - total_text_height)/2
-
-    layouts = []
-    top = 0
-    for idx, text_attr in enumerate(list_of_texts):
-      if idx == 0:
-        top = first_top
-      layouts += [(text_attr[0], fonts[idx], ( ( (canvas_width/2) - (text_sizes[idx][0]/2) ), top) )]
-      top += text_heights[idx]
-
-    return layouts
-
-  else:
+  if not list_of_texts:
     return []
 
-def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
-  if False:
-    new_csvfile = io.StringIO()
-    wr = csv.DictWriter(new_csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
-    wr.writeheader()
-    wr.writerow(data)
-    buffer = io.BytesIO(new_csvfile.getvalue().encode())
-    ts = datetime.datetime.now().timestamp()
-    now = datetime.datetime.now()
-    upload_file(
-      buffer,
-      os.environ['FPOIMG_AWS_BUCKET'],
-      "logs/queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
-    )
+  target_reduction = 0.8  # reduction factor for oversized text
+
+  # Initialize fonts and calculate dimensions
+  fonts, text_sizes, text_heights, text_widths = [], [], [], []
+
+  for text_attr in list_of_texts:
+    text, ttf, max_point = text_attr
+    font = ImageFont.truetype(ttf, max_point)
+    fonts.append(font)
+
+    # Get size using bounding box
+    _, _, width, height = font.getbbox(text)
+    text_sizes.append((width, height))
+    text_heights.append(height)
+    text_widths.append(width)
+
+  total_text_height = sum(text_heights) + (len(list_of_texts) - 1) * line_spacing
+  max_text_width = max(text_widths)
+
+  # Determine the necessary reduction ratio if text doesn't fit the canvas
+  height_reduction_ratio = (
+                                     canvas_height * target_reduction) / total_text_height if total_text_height > canvas_height else 1.0
+  width_reduction_ratio = (canvas_width * target_reduction) / max_text_width if max_text_width > canvas_width else 1.0
+
+  # Apply the maximum reduction ratio
+  reduction_ratio = min(height_reduction_ratio, width_reduction_ratio, 1.0)
+
+  # Recalculate font sizes and text dimensions after reduction
+  if reduction_ratio < 1.0:
+    fonts, text_sizes, text_heights, text_widths = [], [], [], []
+
+    for text_attr in list_of_texts:
+      text, ttf, max_point = text_attr
+      new_font_size = int(reduction_ratio * max_point)
+      new_font = ImageFont.truetype(ttf, new_font_size)
+      fonts.append(new_font)
+
+      _, _, width, height = new_font.getbbox(text)
+      text_sizes.append((width, height))
+      text_heights.append(height)
+      text_widths.append(width)
+
+    total_text_height = sum(text_heights) + (len(list_of_texts) - 1) * line_spacing
+
+  # Center the text vertically in the canvas
+  first_top = (canvas_height - total_text_height) / 2
+
+  # Generate layout positions for each text
+  layouts = []
+  top = first_top
+  for idx, (text, ttf, max_point) in enumerate(list_of_texts):
+    width, height = text_sizes[idx]
+    x_position = (canvas_width - width) / 2
+    layouts.append((text, fonts[idx], (x_position, top)))
+    top += height + line_spacing
+
+  return layouts
 
 
-def upload_file(file, bucket, object_name):
-  access_key_id = os.environ.get('FPOIMG_AWS_ACCESS_KEY_ID', '')
-  access_key = os.environ.get('FPOIMG_AWS_SECRET_ACCESS_KEY', '')
-  if access_key and access_key_id:
-    s3_client = boto3.resource(
-      's3',
-      aws_access_key_id=access_key_id,
-      aws_secret_access_key=access_key,
-    )
-    try:
-      s3_client.Object(bucket, object_name).put(Body=file.getvalue())
-    except ClientError as e:
-      logging.error(e)
-      return False
-    return True
+# def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
+#   if False:
+#     new_csvfile = io.StringIO()
+#     wr = csv.DictWriter(new_csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+#     wr.writeheader()
+#     wr.writerow(data)
+#     buffer = io.BytesIO(new_csvfile.getvalue().encode())
+#     ts = datetime.datetime.now().timestamp()
+#     now = datetime.datetime.now()
+#     upload_file(
+#       buffer,
+#       os.environ['FPOIMG_AWS_BUCKET'],
+#       "logs/queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
+#     )
+
+
+# def upload_file(file, bucket, object_name):
+#   access_key_id = os.environ.get('FPOIMG_AWS_ACCESS_KEY_ID', '')
+#   access_key = os.environ.get('FPOIMG_AWS_SECRET_ACCESS_KEY', '')
+#   if access_key and access_key_id:
+#     s3_client = boto3.resource(
+#       's3',
+#       aws_access_key_id=access_key_id,
+#       aws_secret_access_key=access_key,
+#     )
+#     try:
+#       s3_client.Object(bucket, object_name).put(Body=file.getvalue())
+#     except ClientError as e:
+#       logging.error(e)
+#       return False
+#     return True
 
 
 def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
@@ -292,7 +278,7 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
     referrer=request.referrer
   )
 
-  writeAndUploadCSV(logData, ["timestamp", "width", "height", "caption", "bg_color", "text_color", "referrer", "user_agent"])
+  # writeAndUploadCSV(logData, ["timestamp", "width", "height", "caption", "bg_color", "text_color", "referrer", "user_agent"])
 
   return serve_pil_image(im)
 
