@@ -2,9 +2,16 @@
 
 # virtualenv
 venv
+env-*
 
 # foreman
 .env
+
+# Jetbrains
+.idea
+
+# GCP
+app.yaml
 
 # OS X
 *.DS_Store
