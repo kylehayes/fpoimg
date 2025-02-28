@@ -1,0 +1,289 @@
+{
+  "info": {
+    "name": "FPOImg API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Home Page",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Response has HTML content\", function() { pm.response.to.have.header(\"Content-Type\", \"text/html\"); });"
+      ]
+    },
+    {
+      "name": "Examples Page",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/examples",
+          "host": ["{{baseUrl}}"],
+          "path": ["examples"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Response has HTML content\", function() { pm.response.to.have.header(\"Content-Type\", \"text/html\"); });"
+      ]
+    },
+    {
+      "name": "Square Image",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/300",
+          "host": ["{{baseUrl}}"],
+          "path": ["300"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });",
+        "pm.test(\"Response time is acceptable\", function() { pm.expect(pm.response.responseTime).to.be.below(500); });"
+      ]
+    },
+    {
+      "name": "Basic Image (Path Format)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/300x200",
+          "host": ["{{baseUrl}}"],
+          "path": ["300x200"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });",
+        "pm.test(\"Response time is acceptable\", function() { pm.expect(pm.response.responseTime).to.be.below(500); });"
+      ]
+    },
+    {
+      "name": "Custom Text (Query Parameter)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/400x300?text=Custom%20Test%20Image",
+          "host": ["{{baseUrl}}"],
+          "path": ["400x300"],
+          "query": [
+            {
+              "key": "text",
+              "value": "Custom Test Image"
+            }
+          ]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Custom Text (Path Parameter)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/400x300/Custom%20Text%20Path",
+          "host": ["{{baseUrl}}"],
+          "path": ["400x300", "Custom Text Path"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Custom Colors",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/400x300?bg_color=ff0000&text_color=ffffff",
+          "host": ["{{baseUrl}}"],
+          "path": ["400x300"],
+          "query": [
+            {
+              "key": "bg_color",
+              "value": "ff0000"
+            },
+            {
+              "key": "text_color",
+              "value": "ffffff"
+            }
+          ]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Combined Parameters",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/500x400?bg_color=336699&text_color=ffffff&text=Complete%20Test",
+          "host": ["{{baseUrl}}"],
+          "path": ["500x400"],
+          "query": [
+            {
+              "key": "bg_color",
+              "value": "336699"
+            },
+            {
+              "key": "text_color",
+              "value": "ffffff"
+            },
+            {
+              "key": "text",
+              "value": "Complete Test"
+            }
+          ]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Example From URL (300x250)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/300x250?text=Preview&bg_color=e61919&text_color=ffffff",
+          "host": ["{{baseUrl}}"],
+          "path": ["300x250"],
+          "query": [
+            {
+              "key": "text",
+              "value": "Preview"
+            },
+            {
+              "key": "bg_color",
+              "value": "e61919"
+            },
+            {
+              "key": "text_color",
+              "value": "ffffff"
+            }
+          ]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Response contains image data\", function() { pm.expect(pm.response.size()).to.be.above(0); });"
+      ]
+    },
+    {
+      "name": "Edge Case - Maximum Size",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/5000x5000",
+          "host": ["{{baseUrl}}"],
+          "path": ["5000x5000"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Edge Case - Over Maximum Size (should be capped at 5000)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/6000x6000",
+          "host": ["{{baseUrl}}"],
+          "path": ["6000x6000"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Edge Case - Minimum Size",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/10x10",
+          "host": ["{{baseUrl}}"],
+          "path": ["10x10"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Edge Case - Under Minimum Size (should be capped at 10)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/5x5",
+          "host": ["{{baseUrl}}"],
+          "path": ["5x5"]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    },
+    {
+      "name": "Edge Case - Invalid Color Format",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/300x200?bg_color=invalid&text_color=notacolor",
+          "host": ["{{baseUrl}}"],
+          "path": ["300x200"],
+          "query": [
+            {
+              "key": "bg_color",
+              "value": "invalid"
+            },
+            {
+              "key": "text_color",
+              "value": "notacolor"
+            }
+          ]
+        }
+      },
+      "test": [
+        "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+        "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://staging-dot-fpoimg.wl.r.appspot.com",
+      "type": "string"
+    }
+  ]
+}

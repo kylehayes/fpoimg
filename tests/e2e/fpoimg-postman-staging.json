@@ -1,0 +1,212 @@
+{
+    "info": {
+      "name": "FPOImg API Tests",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Basic Image",
+        "request": {
+          "method": "GET",
+          "url": {
+            "raw": "{{baseUrl}}/fpo?width=300&height=200",
+            "host": ["{{baseUrl}}"],
+            "path": ["fpo"],
+            "query": [
+              {
+                "key": "width",
+                "value": "300"
+              },
+              {
+                "key": "height",
+                "value": "200"
+              }
+            ]
+          }
+        },
+        "test": [
+          "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+          "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });",
+          "pm.test(\"Response time is acceptable\", function() { pm.expect(pm.response.responseTime).to.be.below(500); });"
+        ]
+      },
+      {
+        "name": "PNG Format",
+        "request": {
+          "method": "GET",
+          "url": {
+            "raw": "{{baseUrl}}/fpo?width=400&height=300&format=png",
+            "host": ["{{baseUrl}}"],
+            "path": ["fpo"],
+            "query": [
+              {
+                "key": "width",
+                "value": "400"
+              },
+              {
+                "key": "height",
+                "value": "300"
+              },
+              {
+                "key": "format",
+                "value": "png"
+              }
+            ]
+          }
+        },
+        "test": [
+          "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+          "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+        ]
+      },
+      {
+        "name": "JPG Format",
+        "request": {
+          "method": "GET",
+          "url": {
+            "raw": "{{baseUrl}}/fpo?width=400&height=300&format=jpg",
+            "host": ["{{baseUrl}}"],
+            "path": ["fpo"],
+            "query": [
+              {
+                "key": "width",
+                "value": "400"
+              },
+              {
+                "key": "height",
+                "value": "300"
+              },
+              {
+                "key": "format",
+                "value": "jpg"
+              }
+            ]
+          }
+        },
+        "test": [
+          "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+          "pm.test(\"Content-Type is image/jpeg\", function() { pm.response.to.have.header(\"Content-Type\", \"image/jpeg\"); });"
+        ]
+      },
+      {
+        "name": "Custom Color",
+        "request": {
+          "method": "GET",
+          "url": {
+            "raw": "{{baseUrl}}/fpo?width=400&height=300&bg_color=ff0000&text_color=ffffff",
+            "host": ["{{baseUrl}}"],
+            "path": ["fpo"],
+            "query": [
+              {
+                "key": "width",
+                "value": "400"
+              },
+              {
+                "key": "height",
+                "value": "300"
+              },
+              {
+                "key": "bg_color",
+                "value": "ff0000"
+              },
+              {
+                "key": "text_color",
+                "value": "ffffff"
+              }
+            ]
+          }
+        },
+        "test": [
+          "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });"
+        ]
+      },
+      {
+        "name": "Custom Text",
+        "request": {
+          "method": "GET",
+          "url": {
+            "raw": "{{baseUrl}}/fpo?width=400&height=300&text=Custom%20Test%20Image",
+            "host": ["{{baseUrl}}"],
+            "path": ["fpo"],
+            "query": [
+              {
+                "key": "width",
+                "value": "400"
+              },
+              {
+                "key": "height",
+                "value": "300"
+              },
+              {
+                "key": "text",
+                "value": "Custom Test Image"
+              }
+            ]
+          }
+        },
+        "test": [
+          "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });"
+        ]
+      },
+      {
+        "name": "Combined Parameters",
+        "request": {
+          "method": "GET",
+          "url": {
+            "raw": "{{baseUrl}}/fpo?width=500&height=400&format=png&bg_color=336699&text_color=ffffff&text=Complete%20Test&font_size=24",
+            "host": ["{{baseUrl}}"],
+            "path": ["fpo"],
+            "query": [
+              {
+                "key": "width",
+                "value": "500"
+              },
+              {
+                "key": "height",
+                "value": "400"
+              },
+              {
+                "key": "format",
+                "value": "png"
+              },
+              {
+                "key": "bg_color",
+                "value": "336699"
+              },
+              {
+                "key": "text_color",
+                "value": "ffffff"
+              },
+              {
+                "key": "text",
+                "value": "Complete Test"
+              },
+              {
+                "key": "font_size",
+                "value": "24"
+              }
+            ]
+          }
+        },
+        "test": [
+          "pm.test(\"Status code is 200\", function() { pm.response.to.have.status(200); });",
+          "pm.test(\"Content-Type is image/png\", function() { pm.response.to.have.header(\"Content-Type\", \"image/png\"); });"
+        ]
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "exec": [""]
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "https://staging-dot-fpoimg.appspot.com",
+        "type": "string"
+      }
+    ]
+  }
