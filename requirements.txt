@@ -2,8 +2,6 @@ appdirs==1.4.3
 argcomplete==1.9.3
 attrs==19.1.0
 black==19.3b0
-#boto3==1.9.228
-#botocore==1.12.228
 certifi==2019.9.11
 cfn-flip==1.2.1
 chardet==3.0.4
@@ -12,7 +10,6 @@ click==8.1.7
 docutils==0.15.2
 durationpy==0.5
 Flask==2.2.2
-#Flask-S3==0.3.3
 future==0.16.0
 hjson==3.0.1
 idna==2.8
@@ -28,7 +25,6 @@ python-dateutil==2.6.1
 python-slugify==1.2.4
 PyYAML==5.1.2
 requests==2.32.3
-#s3transfer==0.2.1
 six==1.12.0
 toml==0.10.0
 tqdm==4.19.1
