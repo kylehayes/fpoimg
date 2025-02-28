@@ -1,19 +1,25 @@
+import logging
 from flask import Flask
 from flask import abort, send_file, request, render_template, redirect
 from PIL import Image, ImageDraw, ImageFont
 import os
 import time
 import datetime
-# import boto3
-# import logging
-# import csv
 import io
 import textwrap
 import requests
-# from botocore.exceptions import ClientError
-# from flask_s3 import FlaskS3
 
 app = Flask(__name__)
+
+# configure logging
+logging.basicConfig(level=logging.INFO)
+logger = app.logger
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # log the full exception
+    logger.exception("unhandled exception: %s", str(e))
+    return "Server Error", 500
 
 GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID')
 app.config['FLASKS3_BUCKET_NAME'] = os.environ.get('FPOIMG_AWS_BUCKET')
@@ -53,10 +59,12 @@ def track_event(category, action, label=None, value=0, referrer=555):
 
 @app.route("/")
 def home():
+  logger.info("Home page")
   return render_template('./home.html')
 
 @app.route('/examples')
 def examples():
+  logger.info("Examples page")
   return render_template('./examples.html')
 
 @app.route('/<int:square>')
@@ -75,6 +83,7 @@ def show_image_width_height_caption(width, height, caption):
 
   bg_color_hex = request.args.get('bg_color', '#C7C7C7')
   text_color_hex = request.args.get('text_color', '#8F8F8F')
+  logger.info("Showing image width='%d' height='%d' caption='%s' bg_color='%s' text_color='%s'", width, height, caption, bg_color_hex, text_color_hex)
 
   try:
     bg_color_rgb = hex_to_rgb(bg_color_hex)
@@ -165,7 +174,8 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
 
     for text_attr in list_of_texts:
       text, ttf, max_point = text_attr
-      new_font_size = int(reduction_ratio * max_point)
+      # Ensure new_font_size is at least 1
+      new_font_size = max(1, int(reduction_ratio * max_point))
       new_font = ImageFont.truetype(ttf, new_font_size)
       fonts.append(new_font)
 
@@ -189,40 +199,6 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
     top += height + line_spacing
 
   return layouts
-
-
-# def writeAndUploadCSV(data="", fieldnames=['name', 'category']):
-#   if False:
-#     new_csvfile = io.StringIO()
-#     wr = csv.DictWriter(new_csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
-#     wr.writeheader()
-#     wr.writerow(data)
-#     buffer = io.BytesIO(new_csvfile.getvalue().encode())
-#     ts = datetime.datetime.now().timestamp()
-#     now = datetime.datetime.now()
-#     upload_file(
-#       buffer,
-#       os.environ['FPOIMG_AWS_BUCKET'],
-#       "logs/queries/year={year}/month={month}/day={day}/hour={hour}/{ts}.csv".format(year=now.year, month=now.month, day=now.day, hour=now.hour, ts=ts)
-#     )
-
-
-# def upload_file(file, bucket, object_name):
-#   access_key_id = os.environ.get('FPOIMG_AWS_ACCESS_KEY_ID', '')
-#   access_key = os.environ.get('FPOIMG_AWS_SECRET_ACCESS_KEY', '')
-#   if access_key and access_key_id:
-#     s3_client = boto3.resource(
-#       's3',
-#       aws_access_key_id=access_key_id,
-#       aws_secret_access_key=access_key,
-#     )
-#     try:
-#       s3_client.Object(bucket, object_name).put(Body=file.getvalue())
-#     except ClientError as e:
-#       logging.error(e)
-#       return False
-#     return True
-
 
 def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
   size = (width,height)       # size of the image to create
@@ -278,13 +254,11 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
     referrer=request.referrer
   )
 
-  # writeAndUploadCSV(logData, ["timestamp", "width", "height", "caption", "bg_color", "text_color", "referrer", "user_agent"])
-
   return serve_pil_image(im)
 
 
 if __name__ == "__main__":
-  port = int(os.environ.get('PORT', 5000))
+  port = int(os.environ.get('PORT', 3000))
   if port == 3000:
     app.debug = True
   app.run(host='0.0.0.0', port=port)
