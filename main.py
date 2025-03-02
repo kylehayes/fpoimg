@@ -40,7 +40,7 @@ def handle_exception(e):
 @app.route("/")
 def home():
   logger.info("Home page")
-  return render_template('./home.html')
+  return render_template('./home2.html')
 
 @app.route('/examples')
 def examples():

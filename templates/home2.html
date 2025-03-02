@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPOImg.com - Modern Placeholder Images</title>
+    <link rel="stylesheet" href="static/css/styles2.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">FPO<span>Img</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="#generator">Generator</a></li>
+                        <li><a href="#how-to-use">How to Use</a></li>
+                        <li><a href="#examples">Examples</a></li>
+                        <li><a href="#support">Support Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Modern Placeholder Images</h1>
+            <p>Generate customizable placeholder images for your design and development projects with a simple URL pattern. Fast, free, and flexible.</p>
+        </div>
+    </section>
+    
+    <section id="generator" class="section">
+        <div class="container">
+            <h2 class="section-title">Image Generator</h2>
+            <div class="generator-container">
+                <div class="generator-controls">
+                    <div class="control-group">
+                        <label for="width">Width (px)</label>
+                        <input type="number" id="width" min="1" max="3000" value="400">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="height">Height (px)</label>
+                        <input type="number" id="height" min="1" max="3000" value="350">
+                    </div>
+                   <br/> 
+
+                    <div class="control-group">
+                        <label for="caption">Text</label>
+                        <input type="text" id="caption" value="Preview" placeholder="Enter Caption">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="bg-color">Background Color</label>
+                        <input type="text" id="bg-color" value="#e6e6e6" placeholder="#e6e6e6 or gray">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="text-color">Text Color</label>
+                        <input type="text" id="text-color" value="#8F8F8F" placeholder="#8F8F8F or black">
+                    </div>
+                </div>
+                
+                <button class="generate-btn" id="generate-btn">Generate Image</button>
+                
+                <div class="preview-container">
+                    <div class="preview-frame" style="width: 400px; height: 300px;">
+                        <img src="https://fpoimg.com/800x600" alt="placeholder" id="preview-image" class="preview-image">
+                    </div>
+                    
+                    <div class="url-box" id="url-display">
+                        https://fpoimg.com/800x600?bg_color=eeeeee&text_color=333333
+                        <button class="copy-btn" id="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-to-use" class="section">
+        <div class="container">
+            <h2 class="section-title">How to Use</h2>
+            <div class="url-pattern">
+                <h3>URL Pattern</h3>
+                <p>Generate placeholder images by using a simple URL pattern:</p>
+                <p><code>https://fpoimg.com/{width}x{height}?text={text}bg_color={bg_color}&text_color={text_color}</code></p>
+                
+                <div class="pattern-examples">
+                    <div class="example">
+                        <div class="example-title">Basic Usage</div>
+                        <span class="example-url">https://fpoimg.com/800x600</span>
+                        <p>Creates an 800×600 pixel image with default colors.</p>
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">With a caption</div>
+                        <span class="example-url">https://fpoimg.com/800x600?text=Caption</span>
+                        <p>Creates an 800×600 pixel image with a caption</p>
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">Custom Colors</div>
+                        <span class="example-url">https://fpoimg.com/400x300?bg_color=4361ee&text_color=ffffff</span>
+                        <p>Creates a 400×300 pixel image with blue background and white text.</p>
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">Square Image</div>
+                        <span class="example-url">https://fpoimg.com/500</span>
+                        <p>Creates a 500×500 pixel square image.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="examples" class="section">
+        <div class="container">
+            <h2 class="section-title">Example Use Cases</h2>
+            <div class="sample-section">
+                <div class="sample-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320">
+                        <!-- Background -->
+                        <rect width="400" height="320" fill="#f8f9fa" />
+                        
+                        <!-- Browser window -->
+                        <rect x="50" y="40" width="300" height="220" rx="6" ry="6" fill="#ffffff" stroke="#e1e4e8" stroke-width="2" />
+                        
+                        <!-- Browser header -->
+                        <rect x="50" y="40" width="300" height="30" rx="6" ry="6" fill="#e1e4e8" />
+                        
+                        <!-- Browser controls -->
+                        <circle cx="70" cy="55" r="6" fill="#ff605c" />
+                        <circle cx="90" cy="55" r="6" fill="#ffbd44" />
+                        <circle cx="110" cy="55" r="6" fill="#00ca4e" />
+                        
+                        <!-- URL bar -->
+                        <rect x="130" y="45" width="200" height="20" rx="4" ry="4" fill="#ffffff" stroke="#d1d5da" stroke-width="1" />
+                        
+                        <!-- Layout elements -->
+                        <!-- Header section -->
+                        <rect x="70" y="90" width="260" height="40" rx="4" ry="4" fill="#e1e4e8" />
+                        
+                        <!-- Navigation -->
+                        <rect x="70" y="90" width="260" height="16" rx="2" ry="2" fill="#6c757d" />
+                        <rect x="85" y="94" width="40" height="8" rx="1" ry="1" fill="#ffffff" />
+                        <rect x="135" y="94" width="40" height="8" rx="1" ry="1" fill="#ffffff" />
+                        <rect x="185" y="94" width="40" height="8" rx="1" ry="1" fill="#ffffff" />
+                        <rect x="235" y="94" width="40" height="8" rx="1" ry="1" fill="#ffffff" />
+                        
+                        <!-- Hero section -->
+                        <rect x="70" y="140" width="165" height="100" rx="4" ry="4" fill="#f0f3f5" />
+                        <rect x="90" y="155" width="125" height="10" rx="2" ry="2" fill="#6c757d" />
+                        <rect x="90" y="175" width="100" height="8" rx="2" ry="2" fill="#adb5bd" />
+                        <rect x="90" y="190" width="100" height="8" rx="2" ry="2" fill="#adb5bd" />
+                        <rect x="90" y="210" width="70" height="18" rx="3" ry="3" fill="#007bff" />
+                        <rect x="105" y="215" width="40" height="8" rx="1" ry="1" fill="#ffffff" />
+                        
+                        <!-- Side content -->
+                        <rect x="245" y="140" width="85" height="40" rx="4" ry="4" fill="#f0f3f5" />
+                        <rect x="255" y="150" width="65" height="8" rx="2" ry="2" fill="#adb5bd" />
+                        <rect x="255" y="165" width="40" height="6" rx="1" ry="1" fill="#ced4da" />
+                        
+                        <rect x="245" y="190" width="85" height="50" rx="4" ry="4" fill="#f0f3f5" />
+                        <rect x="255" y="200" width="65" height="8" rx="2" ry="2" fill="#adb5bd" />
+                        <rect x="255" y="215" width="50" height="6" rx="1" ry="1" fill="#ced4da" />
+                        <rect x="255" y="225" width="30" height="6" rx="1" ry="1" fill="#ced4da" />
+                      </svg>
+                    <div class="sample-content">
+                        <h3 class="sample-title">Web Development</h3>
+                        <p>Perfect for prototyping websites before final images are ready.</p>
+                        <a href="#generator" class="sample-link">Try for your website →</a>
+                    </div>
+                </div>
+                
+                <div class="sample-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320">
+                        <!-- Background -->
+                        <rect width="400" height="320" fill="#f8f9fa" />
+                        
+                        <!-- Design board backdrop -->
+                        <rect x="40" y="40" width="320" height="240" rx="6" ry="6" fill="#ffffff" stroke="#e0e0e0" stroke-width="2" />
+                        
+                        <!-- Grid pattern for design board -->
+                        <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f0f0f0" stroke-width="0.5" />
+                        </pattern>
+                        <rect x="40" y="40" width="320" height="240" fill="url(#smallGrid)" />
+                        
+                        <!-- Artboard/Canvas -->
+                        <rect x="80" y="60" width="240" height="180" rx="2" ry="2" fill="#ffffff" stroke="#e1e4e8" stroke-width="1.5" />
+                        
+                        <!-- Mobile device mockup -->
+                        <rect x="100" y="80" width="80" height="140" rx="8" ry="8" fill="#f5f5f5" stroke="#d1d5da" stroke-width="1.5" />
+                        <!-- Device screen -->
+                        <rect x="105" y="90" width="70" height="110" rx="2" ry="2" fill="#ffffff" stroke="#e4e4e4" stroke-width="1" />
+                        <!-- Home button -->
+                        <circle cx="140" cy="210" r="6" fill="#f0f0f0" stroke="#d1d5da" stroke-width="0.5" />
+                        
+                        <!-- App UI Elements -->
+                        <rect x="110" y="95" width="60" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="110" y="110" width="60" height="30" rx="2" ry="2" fill="#e1e4e8" />
+                        <rect x="110" y="145" width="28" height="20" rx="2" ry="2" fill="#e1e4e8" />
+                        <rect x="142" y="145" width="28" height="20" rx="2" ry="2" fill="#e1e4e8" />
+                        <rect x="110" y="170" width="60" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="110" y="185" width="45" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                        
+                        <!-- Wireframe/Mockup Board -->
+                        <rect x="210" y="90" width="90" height="70" rx="2" ry="2" fill="#f8f9fa" stroke="#e4e4e4" stroke-width="1" />
+                        <rect x="215" y="95" width="80" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="215" y="110" width="40" height="45" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="260" y="110" width="35" height="20" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="260" y="135" width="35" height="20" rx="1" ry="1" fill="#e1e4e8" />
+                        
+                        <!-- Color palette -->
+                        <rect x="210" y="170" width="90" height="25" rx="2" ry="2" fill="#ffffff" stroke="#e4e4e4" stroke-width="1" />
+                        <circle cx="220" cy="182.5" r="8" fill="#4285f4" />
+                        <circle cx="240" cy="182.5" r="8" fill="#ea4335" />
+                        <circle cx="260" cy="182.5" r="8" fill="#fbbc05" />
+                        <circle cx="280" cy="182.5" r="8" fill="#34a853" />
+                        <circle cx="300" cy="182.5" r="8" fill="#673ab7" />
+                        
+                        <!-- Ruler markings -->
+                        <line x1="80" y1="55" x2="80" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="100" y1="55" x2="100" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="120" y1="55" x2="120" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="140" y1="55" x2="140" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="160" y1="55" x2="160" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="180" y1="55" x2="180" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="200" y1="55" x2="200" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="220" y1="55" x2="220" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="240" y1="55" x2="240" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="260" y1="55" x2="260" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="280" y1="55" x2="280" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="300" y1="55" x2="300" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        <line x1="320" y1="55" x2="320" y2="60" stroke="#adb5bd" stroke-width="1" />
+                        
+                        <!-- Design tools -->
+                        <g transform="translate(160, 250) scale(0.8)">
+                          <rect x="-30" y="-10" width="120" height="24" rx="12" ry="12" fill="#f0f3f5" stroke="#d1d5da" stroke-width="1" />
+                          <circle cx="-15" cy="2" r="8" fill="#6c757d" />
+                          <rect x="0" y="-4" width="16" height="12" rx="1" ry="1" fill="#6c757d" />
+                          <polygon points="30,2 25,-4 35,-4" fill="#6c757d" />
+                          <rect x="45" y="-4" width="12" height="12" rx="2" ry="2" fill="#6c757d" />
+                          <circle cx="70" cy="2" r="6" stroke="#6c757d" stroke-width="2" fill="none" />
+                        </g>
+                      </svg> 
+                    <div class="sample-content">
+
+                        <h3 class="sample-title">Design Mockups</h3>
+                        <p>Use as placeholders in design mockups and presentations.</p>
+                        <a href="#generator" class="sample-link">Create mockup images →</a>
+                    </div>
+                </div>
+                
+                <div class="sample-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320">
+                        <!-- Background -->
+                        <rect width="400" height="320" fill="#f8f9fa" />
+                        
+                        <!-- Blog/CMS Layout -->
+                        <rect x="50" y="40" width="300" height="220" rx="6" ry="6" fill="#ffffff" stroke="#e1e4e8" stroke-width="2" />
+                        
+                        <!-- Header Section -->
+                        <rect x="50" y="40" width="300" height="50" rx="6" ry="6" fill="#f0f3f5" />
+                        <rect x="70" y="55" width="120" height="20" rx="3" ry="3" fill="#e1e4e8" />
+                        <circle cx="320" cy="65" r="10" fill="#e1e4e8" />
+                        <circle cx="290" cy="65" r="10" fill="#e1e4e8" />
+                        
+                        <!-- Main Content Area -->
+                        <rect x="70" y="110" width="170" height="90" rx="4" ry="4" fill="#f0f3f5" />
+                        
+                        <!-- Plain Image Placeholder -->
+                        <rect x="80" y="120" width="150" height="70" rx="3" ry="3" fill="#e1e4e8" />
+                        
+                        <!-- Content Placeholder -->
+                        <rect x="80" y="200" width="150" height="10" rx="2" ry="2" fill="#e1e4e8" />
+                        <rect x="80" y="220" width="100" height="10" rx="2" ry="2" fill="#e1e4e8" />
+                        
+                        <!-- Sidebar Elements -->
+                        <rect x="260" y="110" width="70" height="25" rx="3" ry="3" fill="#e1e4e8" />
+                        <rect x="260" y="145" width="70" height="55" rx="3" ry="3" fill="#f0f3f5" />
+                        <rect x="270" y="155" width="50" height="8" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="270" y="168" width="50" height="8" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="270" y="181" width="50" height="8" rx="1" ry="1" fill="#e1e4e8" />
+                        <rect x="260" y="210" width="70" height="30" rx="3" ry="3" fill="#f0f3f5" />
+                        
+                        <!-- CMS UI Elements -->
+                        <g transform="translate(230, 230)">
+                          <rect x="-20" y="-15" width="90" height="30" rx="4" ry="4" fill="#ffffff" stroke="#e1e4e8" stroke-width="1" />
+                          <rect x="-10" y="-5" width="15" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                          <rect x="15" y="-5" width="15" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                          <rect x="40" y="-5" width="20" height="10" rx="1" ry="1" fill="#e1e4e8" />
+                        </g>
+                        
+                        <!-- Photo Upload Icon -->
+                        <g transform="translate(155, 155)">
+                          <circle cx="0" cy="0" r="35" fill="#e1e4e8" fill-opacity="0.4" />
+                          <rect x="-15" y="-15" width="30" height="25" rx="2" ry="2" fill="none" stroke="#adb5bd" stroke-width="1.5" />
+                          <polygon points="0,-5 -10,5 10,5" fill="#adb5bd" />
+                          <circle cx="-5" cy="-5" r="3" fill="#adb5bd" />
+                        </g>
+                        
+                      
+                      </svg>
+                    <div class="sample-content">
+                        <h3 class="sample-title">CMS Content</h3>
+                        <p>Generate temporary images for CMS sites and blog posts.</p>
+                        <a href="#generator" class="sample-link">Generate CMS images →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="support" class="section" style="background-color: #f0f4ff;">
+        <div class="container">
+            <h2 class="section-title">Support FPOImg</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem; color: var(--gray);">
+                FPOImg has been providing free placeholder images for over 12 years. Help us keep the service running and improving!
+            </p>
+            
+            <div class="sample-section">
+                <div class="sample-card">
+                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #4cc9f0, #4361ee); color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="sample-content">
+                        <h3 class="sample-title">Donate</h3>
+                        <p>Support FPOImg with a one-time donation or become a monthly supporter. Every contribution helps!</p>
+                        <a href="https://buymeacoffee.com/kylehayes" target="_blank" class="generate-btn" style="display: inline-block; margin-top: 1rem;">Donate Now</a>
+                    </div>
+                </div>
+                
+                <div class="sample-card">
+                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3a0ca3, #7209b7); color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>
+                        </svg>
+                    </div>
+                    <div class="sample-content">
+                        <h3 class="sample-title">Become a Sponsor</h3>
+                        <p>Companies can sponsor FPOImg and have their logo displayed on the generator images. Contact us for details.</p>
+                        <a href="https://form.typeform.com/to/ywHSwfZU" target="_blank" class="generate-btn" style="display: inline-block; margin-top: 1rem;">Sponsor Us</a>
+                    </div>
+                </div>
+                
+                <!-- <div class="sample-card">
+                    <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f72585, #b5179e); color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <path d="M16 13H8"></path>
+                            <path d="M16 17H8"></path>
+                            <path d="M10 9H8"></path>
+                        </svg>
+                    </div>
+                    <div class="sample-content">
+                        <h3 class="sample-title">Premium API</h3>
+                        <p>For high-volume users, our Premium API offers higher limits, additional customization options, and SLA guarantees.</p>
+                        <a href="#" class="generate-btn" style="display: inline-block; margin-top: 1rem;">Learn More</a>
+                    </div>
+                </div> -->
+            </div>
+            
+            <div style="background-color: white; border-radius: 12px; padding: 2rem; box-shadow: 0 5px 20px rgba(0,0,0,0.05); max-width: 900px; margin: 3rem auto 0; text-align: center;">
+                <h3 style="margin-bottom: 1rem;">Open Source Contributors</h3>
+                <p>FPOImg is open source! Star us on GitHub and contribute to the project.</p>
+                <a href="https://github.com/kylehayes/fpoimg" target="_blank" class="generate-btn" style="display: inline-block; margin-top: 1rem; background: var(--dark);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">FPO<span>Img</span></div>
+                <div class="footer-links">
+                    <a href="#generator">Generator</a>
+                    <a href="#how-to-use">How to Use</a>
+                    <a href="#examples">Examples</a>
+                    <a href="#support">Support Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="static/scripts/main2.js" type="text/javascript"></script>
+</body>
+</html>
