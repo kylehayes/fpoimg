@@ -9,7 +9,58 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlDisplay = document.getElementById('url-display');
     const copyBtn = document.getElementById('copy-btn');
     const previewFrame = document.querySelector('.preview-frame');
+
+    // Hamburger menu functionality
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mainNav = document.getElementById('main-nav');
+
+    // Create menu overlay
+    const menuOverlay = document.createElement('div');
+    menuOverlay.className = 'menu-overlay';
+    document.body.appendChild(menuOverlay);
     
+    // Toggle menu function
+    function toggleMenu() {
+        hamburgerBtn.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        
+        // Toggle aria-expanded for accessibility
+        const isExpanded = hamburgerBtn.classList.contains('active');
+        hamburgerBtn.setAttribute('aria-expanded', isExpanded);
+        
+        // Prevent body scrolling when menu is open
+        if (isExpanded) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Event listeners
+    hamburgerBtn.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', toggleMenu);
+    
+    // Close menu when clicking menu items
+    const menuItems = mainNav.querySelectorAll('a');
+    menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                toggleMenu();
+            }
+        });
+    });
+    
+    // Reset menu state on window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+            hamburgerBtn.classList.remove('active');
+            mainNav.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
     // Initialize with default values
     updatePreview();
     
