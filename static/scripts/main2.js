@@ -46,11 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         previewImage.src = url;
         
         // Update URL display
-<<<<<<< HEAD
-        urlDisplay.textContent = url;
-=======
         urlDisplay.innerHTML = `${url}`;
->>>>>>> 869d360 (feat: new look)
     }
     
     // Make the sizing inputs update on change
