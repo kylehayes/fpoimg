@@ -82,7 +82,10 @@ def serve_pil_image(pil_img):
   img_io = io.BytesIO()
   pil_img.save(img_io, 'PNG', quality=70)
   img_io.seek(0)
-  return send_file(img_io, mimetype='image/png')
+  response = send_file(img_io, mimetype='image/png')
+  # Cache for 1 year - same URL always produces identical image
+  response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+  return response
 
 
 def hex_to_rgb(value):
