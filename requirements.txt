@@ -20,6 +20,7 @@ kappa==0.6.0
 lambda_packages==0.20.0
 MarkupSafe==3.0.2
 pillow==11.0.0
+qrcode[pil]==8.0
 placebo==0.9.0
 python-dateutil==2.6.1
 python-slugify==1.2.4
