@@ -94,9 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
         previewFrame.style.height = `${previewHeight}px`;
         
         const url = `https://fpoimg.com/${width}x${height}?text=${caption}&bg_color=${bgColor}&text_color=${textColor}`;
-        previewImage.src = url;
-        
-        // Update URL display
+        previewImage.src = `${url}&nosupport=1`;
+
+        // Update URL display (without nosupport param)
         urlDisplay.innerHTML = `${url}`;
     }
     
