@@ -137,8 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
             params.push(`bg_color=${bgColor}`);
         }
 
-        const url = `https://fpoimg.com/${width}x${height}?${params.join('&')}`;
-        previewImage.src = url;
+        const queryString = params.join('&');
+        const url = `https://fpoimg.com/${width}x${height}?${queryString}`;
+        // Use relative URL for preview so it works locally and in production
+        previewImage.src = `/${width}x${height}?${queryString}`;
         urlDisplay.innerHTML = url;
     }
     
