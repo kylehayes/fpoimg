@@ -60,12 +60,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Show/hide custom gradient inputs
+    // Preset default angles (matching server-side PRESETS)
+    const presetAngles = {
+        sunset: 135, ocean: 180, forest: 135, lavender: 135, midnight: 180,
+        fire: 135, sky: 180, peach: 135, mint: 135, berry: 135,
+        coral: 135, steel: 180, candy: 135, arctic: 135, ember: 180,
+        twilight: 180, spring: 135, neon: 135, rose: 135, shadow: 180
+    };
+
+    // Track if user manually changed the angle
+    gradientAngle.dataset.userChanged = 'false';
+    gradientAngle.addEventListener('input', function() {
+        gradientAngle.dataset.userChanged = 'true';
+    });
+
+    // Show/hide custom gradient inputs and update angle to preset default
     gradientSelect.addEventListener('change', function() {
         if (this.value === 'custom') {
             customGradientControls.style.display = 'block';
         } else {
             customGradientControls.style.display = 'none';
+        }
+        // Update angle field to preset default
+        if (this.value in presetAngles) {
+            gradientAngle.value = presetAngles[this.value];
+            gradientAngle.dataset.userChanged = 'false';
         }
         updatePreview();
     });
@@ -106,10 +125,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const c1 = gradientColor1.value.replace('#', '') || 'FF5E3A';
                 const c2 = gradientColor2.value.replace('#', '') || 'FF9F40';
                 params.push(`gradient=${c1},${c2}`);
+                params.push(`gradient_angle=${angle}`);
             } else {
                 params.push(`gradient=${gradient}`);
+                // Only send angle if user changed it from the preset default
+                if (gradientAngle.dataset.userChanged === 'true') {
+                    params.push(`gradient_angle=${angle}`);
+                }
             }
-            params.push(`gradient_angle=${angle}`);
         } else {
             params.push(`bg_color=${bgColor}`);
         }
