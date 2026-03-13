@@ -2,6 +2,7 @@
 from PIL import Image, ImageDraw
 
 from .text import layout_text
+from .gradient import create_gradient
 
 # Font paths (relative to working directory)
 FONT_BOLD = "ArialBlack.ttf"
@@ -13,20 +14,28 @@ CAPTION_FONT_SIZE = 30
 
 
 def generate_image(width, height, caption="",
-                   bg_color=(100, 100, 100), text_color=(200, 200, 200)):
+                   bg_color=(100, 100, 100), text_color=(200, 200, 200),
+                   gradient=None, gradient_angle=None):
     """Generate a placeholder PIL image.
 
     Args:
         width: Image width in pixels
         height: Image height in pixels
         caption: Optional text caption below dimensions
-        bg_color: Background color as RGB tuple
+        bg_color: Background color as RGB tuple (used when no gradient)
         text_color: Text color as RGB tuple
+        gradient: Optional tuple of (color1, color2, default_angle) for gradient background
+        gradient_angle: Optional angle override for gradient direction
 
     Returns:
         PIL.Image.Image: The generated placeholder image
     """
-    im = Image.new('RGB', (width, height), bg_color)
+    if gradient:
+        color1, color2, default_angle = gradient
+        angle = gradient_angle if gradient_angle is not None else default_angle
+        im = create_gradient(width, height, color1, color2, angle)
+    else:
+        im = Image.new('RGB', (width, height), bg_color)
 
     # Dimension label (e.g. "300×200")
     dim_text = f"{width}\u00D7{height}"
