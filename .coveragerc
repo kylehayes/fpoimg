@@ -1,5 +1,5 @@
 [run]
-source = .
+source = fpoimg
 omit =
     tests/*
     venv/*

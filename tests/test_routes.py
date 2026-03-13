@@ -64,7 +64,7 @@ class TestWidthHeightImage:
 
 
 class TestDimensionClamping:
-    """Dimensions should be clamped to 10–5000."""
+    """Dimensions should be clamped to 10-5000."""
 
     def test_width_clamped_to_minimum(self, client):
         resp = client.get("/1x100")
@@ -105,7 +105,6 @@ class TestColors:
     def test_custom_bg_color(self, client):
         resp = client.get("/100x100?bg_color=%23FF0000")
         img = Image.open(io.BytesIO(resp.data))
-        # Check a corner pixel (should be red-ish, the text area may differ)
         pixel = img.getpixel((0, 0))
         assert pixel == (255, 0, 0)
 
@@ -117,7 +116,6 @@ class TestColors:
         resp = client.get("/100x100?bg_color=ZZZZZZ")
         assert resp.status_code == 200
         img = Image.open(io.BytesIO(resp.data))
-        # Should fall back to default #C7C7C7 = (199, 199, 199)
         pixel = img.getpixel((0, 0))
         assert pixel == (199, 199, 199)
 
@@ -152,7 +150,7 @@ class TestErrorHandler:
         """Trigger the generic Exception handler."""
         def explode(*args, **kwargs):
             raise RuntimeError("boom")
-        monkeypatch.setattr("main.generate_image", explode)
+        monkeypatch.setattr("fpoimg.routes.generate_image", explode)
         resp = client.get("/200x200")
         assert resp.status_code == 500
         assert b"Server Error" in resp.data
