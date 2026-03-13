@@ -111,8 +111,9 @@ def serve_pil_image(pil_img):
   pil_img.save(img_io, 'PNG', quality=70)
   img_io.seek(0)
   response = send_file(img_io, mimetype='image/png')
-  # Cache for 1 year - same URL always produces identical image
-  response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+  # Prevent caching so clients always get fresh images
+  response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+  response.headers['Pragma'] = 'no-cache'
   return response
 
 
