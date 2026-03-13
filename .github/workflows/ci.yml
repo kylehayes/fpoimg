@@ -29,7 +29,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests with coverage
-        run: pytest tests/ -v --tb=short --cov=. --cov-report=term-missing --cov-report=html:htmlcov
+        run: pytest tests/ -v --tb=short --cov=. --cov-report=term-missing
 
       - name: Coverage summary
         run: |
