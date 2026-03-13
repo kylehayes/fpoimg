@@ -61,12 +61,18 @@
 
                     <div class="control-group">
                         <label for="bg-color">Background Color</label>
-                        <input type="text" id="bg-color" value="#e6e6e6" placeholder="#e6e6e6 or gray">
+                        <div class="color-input-group">
+                            <input type="color" id="bg-color-picker" value="#e6e6e6" class="color-picker">
+                            <input type="text" id="bg-color" value="#e6e6e6" placeholder="#e6e6e6">
+                        </div>
                     </div>
                     
                     <div class="control-group">
                         <label for="text-color">Text Color</label>
-                        <input type="text" id="text-color" value="#8F8F8F" placeholder="#8F8F8F or black">
+                        <div class="color-input-group">
+                            <input type="color" id="text-color-picker" value="#8F8F8F" class="color-picker">
+                            <input type="text" id="text-color" value="#8F8F8F" placeholder="#8F8F8F">
+                        </div>
                     </div>
 
                     <div class="control-group">
@@ -99,9 +105,15 @@
 
                     <div id="custom-gradient-controls" class="control-group" style="display: none;">
                         <label for="gradient-color1">Gradient Start</label>
-                        <input type="text" id="gradient-color1" value="#FF5E3A" placeholder="#FF5E3A">
+                        <div class="color-input-group">
+                            <input type="color" id="gradient-color1-picker" value="#FF5E3A" class="color-picker">
+                            <input type="text" id="gradient-color1" value="#FF5E3A" placeholder="#FF5E3A">
+                        </div>
                         <label for="gradient-color2" style="margin-top: 0.5rem;">Gradient End</label>
-                        <input type="text" id="gradient-color2" value="#FF9F40" placeholder="#FF9F40">
+                        <div class="color-input-group">
+                            <input type="color" id="gradient-color2-picker" value="#FF9F40" class="color-picker">
+                            <input type="text" id="gradient-color2" value="#FF9F40" placeholder="#FF9F40">
+                        </div>
                     </div>
 
                     <div class="control-group">

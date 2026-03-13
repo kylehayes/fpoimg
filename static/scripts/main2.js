@@ -60,6 +60,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Color picker sync — pairs each color picker with its text input
+    function syncColorPair(pickerId, textId) {
+        const picker = document.getElementById(pickerId);
+        const text = document.getElementById(textId);
+        if (!picker || !text) return;
+
+        picker.addEventListener('input', function() {
+            text.value = this.value;
+            text.dispatchEvent(new Event('input'));
+        });
+        text.addEventListener('input', function() {
+            // Only update picker if it's a valid 6-digit hex
+            const val = this.value.replace('#', '');
+            if (/^[0-9A-Fa-f]{6}$/.test(val)) {
+                picker.value = '#' + val;
+            }
+        });
+    }
+
+    syncColorPair('bg-color-picker', 'bg-color');
+    syncColorPair('text-color-picker', 'text-color');
+    syncColorPair('gradient-color1-picker', 'gradient-color1');
+    syncColorPair('gradient-color2-picker', 'gradient-color2');
+
     // Preset default angles (matching server-side PRESETS)
     const presetAngles = {
         sunset: 135, ocean: 180, forest: 135, lavender: 135, midnight: 180,

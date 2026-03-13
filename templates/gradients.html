@@ -187,11 +187,17 @@
                     </div>
                     <div class="control-group">
                         <label for="b-color1">Start Color</label>
-                        <input type="text" id="b-color1" value="#FF5E3A" placeholder="#FF5E3A">
+                        <div class="color-input-group">
+                            <input type="color" id="b-color1-picker" value="#FF5E3A" class="color-picker">
+                            <input type="text" id="b-color1" value="#FF5E3A" placeholder="#FF5E3A">
+                        </div>
                     </div>
                     <div class="control-group">
                         <label for="b-color2">End Color</label>
-                        <input type="text" id="b-color2" value="#FFAF40" placeholder="#FFAF40">
+                        <div class="color-input-group">
+                            <input type="color" id="b-color2-picker" value="#FFAF40" class="color-picker">
+                            <input type="text" id="b-color2" value="#FFAF40" placeholder="#FFAF40">
+                        </div>
                     </div>
                     <div class="control-group">
                         <label for="b-angle">Angle (°)</label>
@@ -199,7 +205,10 @@
                     </div>
                     <div class="control-group">
                         <label for="b-text-color">Text Color</label>
-                        <input type="text" id="b-text-color" value="#ffffff" placeholder="#ffffff">
+                        <div class="color-input-group">
+                            <input type="color" id="b-text-color-picker" value="#ffffff" class="color-picker">
+                            <input type="text" id="b-text-color" value="#ffffff" placeholder="#ffffff">
+                        </div>
                     </div>
                     <div class="control-group">
                         <label for="b-caption">Caption</label>
@@ -252,6 +261,24 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Color picker sync
+        function syncColorPair(pickerId, textId) {
+            const picker = document.getElementById(pickerId);
+            const text = document.getElementById(textId);
+            if (!picker || !text) return;
+            picker.addEventListener('input', function() {
+                text.value = this.value;
+                text.dispatchEvent(new Event('input'));
+            });
+            text.addEventListener('input', function() {
+                const val = this.value.replace('#', '');
+                if (/^[0-9A-Fa-f]{6}$/.test(val)) picker.value = '#' + val;
+            });
+        }
+        syncColorPair('b-color1-picker', 'b-color1');
+        syncColorPair('b-color2-picker', 'b-color2');
+        syncColorPair('b-text-color-picker', 'b-text-color');
+
         // Custom gradient builder
         const fields = ['b-width', 'b-height', 'b-color1', 'b-color2', 'b-angle', 'b-text-color', 'b-caption'];
         const preview = document.getElementById('b-preview');

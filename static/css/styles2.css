@@ -129,6 +129,41 @@ nav a:hover {
     flex-direction: column;
 }
 
+.color-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-input-group input[type="text"] {
+    flex: 1;
+}
+
+.color-picker {
+    width: 42px;
+    height: 42px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    background: none;
+    flex-shrink: 0;
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+    padding: 2px;
+}
+
+.color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+.color-picker::-moz-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
 label {
     font-weight: 600;
     margin-bottom: 0.5rem;
