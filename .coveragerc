@@ -4,6 +4,7 @@ omit =
     tests/*
     venv/*
     upload_static_to_s3.py
+    test_gallery.py
 
 [report]
 show_missing = true

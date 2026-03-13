@@ -147,3 +147,12 @@ class TestErrorHandler:
         assert data["code"] == 404
         assert "name" in data
         assert "description" in data
+
+    def test_unhandled_exception_returns_500(self, client, monkeypatch):
+        """Trigger the generic Exception handler."""
+        def explode(*args, **kwargs):
+            raise RuntimeError("boom")
+        monkeypatch.setattr("main.generate_image", explode)
+        resp = client.get("/200x200")
+        assert resp.status_code == 500
+        assert b"Server Error" in resp.data
