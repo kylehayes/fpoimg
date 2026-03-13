@@ -6,6 +6,7 @@ from .utils.colors import parse_color
 from .utils.params import clamp_dimension, DEFAULT_BG_COLOR, DEFAULT_TEXT_COLOR
 from .generators.image import generate_image
 from .generators.formats import image_to_bytes, FORMAT_MIMETYPES
+from .generators.gradient import parse_gradient_param, PRESETS
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,13 @@ def home():
 def examples():
     logger.info("Examples page")
     return render_template('./examples.html')
+
+
+@routes_bp.route('/gradients')
+def gradients():
+    """Gradient picker page with premade presets and custom builder."""
+    logger.info("Gradients page")
+    return render_template('./gradients.html', presets=PRESETS)
 
 
 @routes_bp.route('/<int:square>')
@@ -50,10 +58,15 @@ def _generate_response(width, height, caption=None):
     bg_color = parse_color(request.args.get('bg_color', DEFAULT_BG_COLOR), DEFAULT_BG_COLOR)
     text_color = parse_color(request.args.get('text_color', DEFAULT_TEXT_COLOR), DEFAULT_TEXT_COLOR)
 
-    logger.info("Showing image width='%d' height='%d' caption='%s' bg_color='%s' text_color='%s'",
-                width, height, caption, bg_color, text_color)
+    # Gradient support
+    gradient = parse_gradient_param(request.args.get('gradient', ''))
+    gradient_angle = request.args.get('gradient_angle', None, type=int)
 
-    im = generate_image(width, height, caption, bg_color, text_color)
+    logger.info("Showing image width='%d' height='%d' caption='%s' bg_color='%s' text_color='%s' gradient='%s'",
+                width, height, caption, bg_color, text_color, request.args.get('gradient', ''))
+
+    im = generate_image(width, height, caption, bg_color, text_color,
+                        gradient=gradient, gradient_angle=gradient_angle)
 
     # Serialize
     fmt = "PNG"

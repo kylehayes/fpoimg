@@ -137,6 +137,48 @@ class TestCacheHeaders:
         assert resp.headers.get("Pragma") == "no-cache"
 
 
+class TestGradientRoutes:
+    def test_preset_gradient(self, client):
+        resp = client.get("/200x200?gradient=sunset&text_color=ffffff")
+        assert resp.status_code == 200
+        assert resp.content_type == "image/png"
+        img = Image.open(io.BytesIO(resp.data))
+        assert img.size == (200, 200)
+
+    def test_custom_gradient(self, client):
+        resp = client.get("/200x200?gradient=FF0000,0000FF")
+        assert resp.status_code == 200
+        img = Image.open(io.BytesIO(resp.data))
+        assert img.size == (200, 200)
+
+    def test_gradient_with_angle(self, client):
+        resp = client.get("/200x200?gradient=ocean&gradient_angle=45")
+        assert resp.status_code == 200
+
+    def test_invalid_gradient_falls_back_to_solid(self, client):
+        resp = client.get("/100x100?gradient=notreal&bg_color=%23FF0000")
+        assert resp.status_code == 200
+        img = Image.open(io.BytesIO(resp.data))
+        # Should fall back to solid bg_color
+        pixel = img.getpixel((0, 0))
+        assert pixel == (255, 0, 0)
+
+    def test_no_gradient_uses_solid(self, client):
+        resp = client.get("/100x100?bg_color=%2300FF00")
+        img = Image.open(io.BytesIO(resp.data))
+        pixel = img.getpixel((0, 0))
+        assert pixel == (0, 255, 0)
+
+    def test_gradient_with_caption(self, client):
+        resp = client.get("/300x200/Hello?gradient=mint&text_color=000000")
+        assert resp.status_code == 200
+
+    def test_gradients_page(self, client):
+        resp = client.get("/gradients")
+        assert resp.status_code == 200
+        assert b"Gradient" in resp.data
+
+
 class TestErrorHandler:
     def test_404_returns_json(self, client):
         resp = client.get("/not/a/valid/route/at/all")

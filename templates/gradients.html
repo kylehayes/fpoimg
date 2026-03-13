@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Picker - FPOImg.com</title>
+    <link rel="stylesheet" href="/static/css/styles2.css">
+    <style>
+        .gradient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .gradient-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+        .gradient-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .gradient-preview {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gradient-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gradient-info {
+            padding: 1rem 1.25rem;
+        }
+        .gradient-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: capitalize;
+            margin-bottom: 0.5rem;
+        }
+        .gradient-url {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--gray);
+            word-break: break-all;
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+        .gradient-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .gradient-actions button {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-copy {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-copy:hover {
+            background: var(--secondary);
+        }
+        .btn-open {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+        .btn-open:hover {
+            background: #e0e0e0;
+        }
+        .custom-builder {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+        .custom-builder h3 {
+            margin-bottom: 1.5rem;
+        }
+        .builder-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) {
+            .builder-controls {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .builder-controls:last-of-type {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .builder-controls .control-group label {
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+        .builder-preview {
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .builder-preview img {
+            width: 100%;
+            display: block;
+        }
+        .builder-url {
+            font-family: monospace;
+            font-size: 0.85rem;
+            background: #f5f5f5;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .builder-url button {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .builder-url button:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">FPO<span>Img</span></div>
+                <button class="hamburger-menu" id="hamburger-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="/#generator">Generator</a></li>
+                        <li><a href="/#how-to-use">How to Use</a></li>
+                        <li><a href="/gradients" style="font-weight: 700;">Gradients</a></li>
+                        <li><a href="/#examples">Examples</a></li>
+                        <li><a href="/#support">Support Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1>Gradient Backgrounds</h1>
+            <p>Choose from 20 premade gradient presets or build your own custom gradient. Just add <code style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;">?gradient=name</code> to any image URL.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="custom-builder">
+                <h3>🎨 Custom Gradient Builder</h3>
+                <div class="builder-controls">
+                    <div class="control-group">
+                        <label for="b-width">Width</label>
+                        <input type="number" id="b-width" value="600" min="10" max="5000">
+                    </div>
+                    <div class="control-group">
+                        <label for="b-height">Height</label>
+                        <input type="number" id="b-height" value="300" min="10" max="5000">
+                    </div>
+                    <div class="control-group">
+                        <label for="b-angle">Angle (°)</label>
+                        <input type="number" id="b-angle" value="135" min="0" max="360">
+                    </div>
+                    <div class="control-group">
+                        <label for="b-caption">Caption</label>
+                        <input type="text" id="b-caption" value="" placeholder="Optional">
+                    </div>
+                </div>
+                <div class="builder-controls">
+                    <div class="control-group">
+                        <label for="b-color1">Start Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="b-color1-picker" value="#FF5E3A" class="color-picker">
+                            <input type="text" id="b-color1" value="#FF5E3A" placeholder="#FF5E3A">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="b-color2">End Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="b-color2-picker" value="#FFAF40" class="color-picker">
+                            <input type="text" id="b-color2" value="#FFAF40" placeholder="#FFAF40">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="b-text-color">Text Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="b-text-color-picker" value="#ffffff" class="color-picker">
+                            <input type="text" id="b-text-color" value="#ffffff" placeholder="#ffffff">
+                        </div>
+                    </div>
+                </div>
+                <div class="builder-preview">
+                    <img id="b-preview" src="" alt="Custom gradient preview">
+                </div>
+                <div class="builder-url">
+                    <span id="b-url"></span>
+                    <button id="b-copy">Copy URL</button>
+                </div>
+            </div>
+
+            <h2 class="section-title">Premade Gradients</h2>
+            <div class="gradient-grid">
+                {% for name, (c1, c2, angle) in presets.items() %}
+                <div class="gradient-card">
+                    <div class="gradient-preview">
+                        <img src="/400x160?gradient={{ name }}&text_color=ffffff" alt="{{ name }} gradient">
+                    </div>
+                    <div class="gradient-info">
+                        <div class="gradient-name">{{ name }}</div>
+                        <div class="gradient-url">?gradient={{ name }}</div>
+                        <div class="gradient-actions">
+                            <button class="btn-copy" data-gradient="{{ name }}">Copy URL</button>
+                            <button class="btn-open" data-gradient="{{ name }}">Open 800×600</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">FPO<span>Img</span></div>
+                <div class="footer-links">
+                    <a href="/#generator">Generator</a>
+                    <a href="/#how-to-use">How to Use</a>
+                    <a href="/gradients">Gradients</a>
+                    <a href="/#examples">Examples</a>
+                    <a href="/#support">Support Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hamburger menu
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mainNav = document.getElementById('main-nav');
+        const menuOverlay = document.createElement('div');
+        menuOverlay.className = 'menu-overlay';
+        document.body.appendChild(menuOverlay);
+
+        function toggleMenu() {
+            hamburgerBtn.classList.toggle('active');
+            mainNav.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            const isExpanded = hamburgerBtn.classList.contains('active');
+            hamburgerBtn.setAttribute('aria-expanded', isExpanded);
+            document.body.style.overflow = isExpanded ? 'hidden' : '';
+        }
+
+        hamburgerBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        mainNav.querySelectorAll('a').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleMenu();
+            });
+        });
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                hamburgerBtn.classList.remove('active');
+                mainNav.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Color picker sync
+        function syncColorPair(pickerId, textId) {
+            const picker = document.getElementById(pickerId);
+            const text = document.getElementById(textId);
+            if (!picker || !text) return;
+            picker.addEventListener('input', function() {
+                text.value = this.value;
+                text.dispatchEvent(new Event('input'));
+            });
+            text.addEventListener('input', function() {
+                const val = this.value.replace('#', '');
+                if (/^[0-9A-Fa-f]{6}$/.test(val)) picker.value = '#' + val;
+            });
+        }
+        syncColorPair('b-color1-picker', 'b-color1');
+        syncColorPair('b-color2-picker', 'b-color2');
+        syncColorPair('b-text-color-picker', 'b-text-color');
+
+        // Custom gradient builder
+        const fields = ['b-width', 'b-height', 'b-color1', 'b-color2', 'b-angle', 'b-text-color', 'b-caption'];
+        const preview = document.getElementById('b-preview');
+        const urlSpan = document.getElementById('b-url');
+        const copyBtn = document.getElementById('b-copy');
+
+        function updateBuilder() {
+            const w = document.getElementById('b-width').value || 600;
+            const h = document.getElementById('b-height').value || 300;
+            const c1 = document.getElementById('b-color1').value.replace('#', '');
+            const c2 = document.getElementById('b-color2').value.replace('#', '');
+            const angle = document.getElementById('b-angle').value || 135;
+            const tc = document.getElementById('b-text-color').value.replace('#', '') || 'ffffff';
+            const caption = document.getElementById('b-caption').value;
+
+            let params = [`gradient=${c1},${c2}`, `gradient_angle=${angle}`, `text_color=${tc}`];
+            if (caption) params.push(`text=${encodeURIComponent(caption)}`);
+
+            const path = `${w}x${h}`;
+            const url = `https://fpoimg.com/${path}?${params.join('&')}`;
+            preview.src = `/${path}?${params.join('&')}`;
+            urlSpan.textContent = url;
+        }
+
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            el.addEventListener('input', function() {
+                clearTimeout(el._t);
+                el._t = setTimeout(updateBuilder, 300);
+            });
+        });
+
+        copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(urlSpan.textContent).then(() => {
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => copyBtn.textContent = 'Copy URL', 2000);
+            });
+        });
+
+        updateBuilder();
+
+        // Preset card buttons
+        document.querySelectorAll('.btn-copy').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.gradient;
+                const url = `https://fpoimg.com/800x600?gradient=${name}&text_color=ffffff`;
+                navigator.clipboard.writeText(url).then(() => {
+                    this.textContent = 'Copied!';
+                    setTimeout(() => this.textContent = 'Copy URL', 2000);
+                });
+            });
+        });
+
+        document.querySelectorAll('.btn-open').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.gradient;
+                window.open(`/800x600?gradient=${name}&text_color=ffffff`, '_blank');
+            });
+        });
+    });
+    </script>
+</body>
+</html>

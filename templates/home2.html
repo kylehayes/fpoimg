@@ -20,6 +20,7 @@
                     <ul>
                         <li><a href="#generator">Generator</a></li>
                         <li><a href="#how-to-use">How to Use</a></li>
+                        <li><a href="/gradients">Gradients</a></li>
                         <li><a href="#examples">Examples</a></li>
                         <li><a href="#support">Support Us</a></li>
                     </ul>
@@ -31,7 +32,10 @@
     <section class="hero">
         <div class="container">
             <h1>Modern Placeholder Images</h1>
-            <p>Generate customizable placeholder images for your design and development projects with a simple URL pattern. Fast, free, and flexible.</p>
+            <p>Generate customizable placeholder images for your design and development projects with a simple URL pattern. Now with <strong>gradient backgrounds</strong>. Fast, free, and flexible.</p>
+            <div class="hero-image">
+                <img src="/600x200?gradient=sunset&text_color=ffffff&text=Your+Design+Here" alt="Gradient placeholder example" style="border-radius: 8px; max-width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+            </div>
         </div>
     </section>
     
@@ -57,12 +61,64 @@
 
                     <div class="control-group">
                         <label for="bg-color">Background Color</label>
-                        <input type="text" id="bg-color" value="#e6e6e6" placeholder="#e6e6e6 or gray">
+                        <div class="color-input-group">
+                            <input type="color" id="bg-color-picker" value="#e6e6e6" class="color-picker">
+                            <input type="text" id="bg-color" value="#e6e6e6" placeholder="#e6e6e6">
+                        </div>
                     </div>
                     
                     <div class="control-group">
                         <label for="text-color">Text Color</label>
-                        <input type="text" id="text-color" value="#8F8F8F" placeholder="#8F8F8F or black">
+                        <div class="color-input-group">
+                            <input type="color" id="text-color-picker" value="#8F8F8F" class="color-picker">
+                            <input type="text" id="text-color" value="#8F8F8F" placeholder="#8F8F8F">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="gradient">Gradient</label>
+                        <select id="gradient">
+                            <option value="">None (solid color)</option>
+                            <option value="sunset">🌅 Sunset</option>
+                            <option value="ocean">🌊 Ocean</option>
+                            <option value="forest">🌲 Forest</option>
+                            <option value="lavender">💜 Lavender</option>
+                            <option value="midnight">🌙 Midnight</option>
+                            <option value="fire">🔥 Fire</option>
+                            <option value="sky">☁️ Sky</option>
+                            <option value="peach">🍑 Peach</option>
+                            <option value="mint">🌿 Mint</option>
+                            <option value="berry">🫐 Berry</option>
+                            <option value="coral">🪸 Coral</option>
+                            <option value="steel">⚙️ Steel</option>
+                            <option value="candy">🍬 Candy</option>
+                            <option value="arctic">❄️ Arctic</option>
+                            <option value="ember">🪨 Ember</option>
+                            <option value="twilight">🌆 Twilight</option>
+                            <option value="spring">🌸 Spring</option>
+                            <option value="neon">💚 Neon</option>
+                            <option value="rose">🌹 Rose</option>
+                            <option value="shadow">🖤 Shadow</option>
+                            <option value="custom">🎨 Custom...</option>
+                        </select>
+                    </div>
+
+                    <div id="custom-gradient-controls" class="control-group" style="display: none;">
+                        <label for="gradient-color1">Gradient Start</label>
+                        <div class="color-input-group">
+                            <input type="color" id="gradient-color1-picker" value="#FF5E3A" class="color-picker">
+                            <input type="text" id="gradient-color1" value="#FF5E3A" placeholder="#FF5E3A">
+                        </div>
+                        <label for="gradient-color2" style="margin-top: 0.5rem;">Gradient End</label>
+                        <div class="color-input-group">
+                            <input type="color" id="gradient-color2-picker" value="#FF9F40" class="color-picker">
+                            <input type="text" id="gradient-color2" value="#FF9F40" placeholder="#FF9F40">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="gradient-angle">Gradient Angle (°)</label>
+                        <input type="number" id="gradient-angle" min="0" max="360" value="135" placeholder="135">
                     </div>
                 </div>
                 
@@ -115,6 +171,18 @@
                         <div class="example-title">Square Image</div>
                         <span class="example-url">https://fpoimg.com/500</span>
                         <p>Creates a 500×500 pixel square image.</p>
+                    </div>
+
+                    <div class="example">
+                        <div class="example-title">Gradient Background</div>
+                        <span class="example-url">https://fpoimg.com/800x600?gradient=sunset&text_color=ffffff</span>
+                        <p>Creates an 800×600 image with a sunset gradient and white text.</p>
+                    </div>
+
+                    <div class="example">
+                        <div class="example-title">Custom Gradient</div>
+                        <span class="example-url">https://fpoimg.com/400x300?gradient=FF5733,3357FF&gradient_angle=45</span>
+                        <p>Creates a 400×300 image with a custom two-color gradient at 45°.</p>
                     </div>
                 </div>
             </div>
@@ -391,6 +459,7 @@
                 <div class="footer-links">
                     <a href="#generator">Generator</a>
                     <a href="#how-to-use">How to Use</a>
+                    <a href="/gradients">Gradients</a>
                     <a href="#examples">Examples</a>
                     <a href="#support">Support Us</a>
                 </div>
