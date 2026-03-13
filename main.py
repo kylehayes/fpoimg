@@ -30,7 +30,7 @@ _CTA_LABELS = [
 ]
 _CTA_MIN_WIDTH  = int(os.environ.get("SUPPORT_CTA_MIN_WIDTH",  "300"))
 _CTA_MIN_HEIGHT = int(os.environ.get("SUPPORT_CTA_MIN_HEIGHT", "250"))
-_CTA_FREQUENCY  = int(os.environ.get("SUPPORT_CTA_FREQUENCY",  "5"))
+_CTA_FREQUENCY  = int(os.environ.get("SUPPORT_CTA_FREQUENCY",  "0"))
 
 def _build_cta_qr() -> Image.Image:
     qr = qrcode.QRCode(
@@ -212,7 +212,7 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
   return layouts
 
 def should_show_cta(width: int, height: int, nosupport: bool) -> bool:
-    if nosupport:
+    if nosupport or _CTA_FREQUENCY <= 0:
         return False
     if width < _CTA_MIN_WIDTH or height < _CTA_MIN_HEIGHT:
         return False
