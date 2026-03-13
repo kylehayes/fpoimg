@@ -10,6 +10,7 @@ FPOimg (For Placement Only Image) is a lightweight Flask-based web service that 
 
 - **Simple URL-based API**: Generate images using straightforward URL patterns
 - **Custom Dimensions**: Specify exact width and height for your placeholders
+- **Gradient Backgrounds**: 20 premade gradient presets or custom two-color gradients
 - **Text Overlays**: Add dimension information and custom captions
 - **Color Customization**: Control both background and text colors
 - **Responsive Design**: Works with images from 10px to 5000px in size
@@ -25,28 +26,70 @@ FPOimg (For Placement Only Image) is a lightweight Flask-based web service that 
 /500x200/Hello  → 500×200 image with "Hello" caption
 ```
 
+### Gradient Backgrounds
+
+Add beautiful gradients with a single parameter:
+
+```
+/800x600?gradient=sunset                          → Premade sunset gradient
+/800x600?gradient=ocean&text_color=ffffff          → Ocean gradient with white text
+/400x300?gradient=FF5733,3357FF                   → Custom two-color gradient
+/400x300?gradient=FF5733,3357FF&gradient_angle=45 → Custom gradient at 45°
+```
+
+#### Available Presets
+
+| Preset | Colors | Preset | Colors |
+|--------|--------|--------|--------|
+| `sunset` | 🟧 orange to gold | `ocean` | 🔵 teal to blue |
+| `forest` | 🟢 green to mint | `lavender` | 🟣 purple to pink |
+| `midnight` | ⬛ dark teal | `fire` | 🔴 red to orange |
+| `sky` | 🔵 light blue to navy | `peach` | 🟠 peach to salmon |
+| `mint` | 🟢 mint to teal | `berry` | 🟣 purple to violet |
+| `coral` | 🟠 salmon to red | `steel` | ⬛ dark gray to light |
+| `candy` | 🩷 pink to yellow | `arctic` | 🔵 mint to blue |
+| `ember` | 🔴 orange-red to gold | `twilight` | 🟣 purple to dark |
+| `spring` | 🟢 green to yellow | `neon` | 🟢 green to blue |
+| `rose` | 🩷 pink to red | `shadow` | ⬛ gray to dark |
+
+Browse all presets with live previews at [fpoimg.com/gradients](https://fpoimg.com/gradients).
+
 ### URL Parameters
 
 Customize your images with query parameters:
 
 ```
-/500x300?bg_color=#FF5733&text_color=#FFFFFF  → Orange background with white text
-/400x200?text=Custom+Caption                  → Image with custom caption text
+/500x300?bg_color=FF5733&text_color=FFFFFF     → Orange background with white text
+/400x200?text=Custom+Caption                   → Image with custom caption text
+/800x400?gradient=sunset&text_color=ffffff      → Sunset gradient with white text
 ```
 
 ### Parameter Reference
 
-| Parameter    | Description                      | Default  |
-|--------------|----------------------------------|----------|
-| `bg_color`   | Background color (hex)           | #C7C7C7  |
-| `text_color` | Text color (hex)                 | #8F8F8F  |
-| `text`       | Caption text (alternative method)| None     |
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `bg_color` | Background color (hex, 3 or 6 digit) | `#C7C7C7` |
+| `text_color` | Text color (hex, 3 or 6 digit) | `#8F8F8F` |
+| `text` | Caption text | None |
+| `gradient` | Gradient preset name or `color1,color2` hex | None |
+| `gradient_angle` | Gradient direction in degrees (CSS-style: 0°=up, 90°=right, 180°=down) | Preset default or `180` |
+
+> **Note:** When `gradient` is set, `bg_color` is ignored. Omit `gradient` for a solid color background.
+
+## Pages
+
+| URL | Description |
+|-----|-------------|
+| `/` | Homepage with interactive image generator |
+| `/gradients` | Gradient picker with all presets + custom builder |
+| `/examples` | Example use cases |
+| `/test` | Test gallery with randomized images |
 
 ## Self-Hosting
 
 ### Requirements
 
-- Python 3.12
+- Python 3.11+
 - Flask
 - Pillow (PIL Fork)
 - Required fonts: Arial.ttf, ArialBlack.ttf
@@ -54,29 +97,44 @@ Customize your images with query parameters:
 ### Installation
 
 1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/fpoimg.git
+   ```bash
+   git clone https://github.com/kylehayes/fpoimg.git
    cd fpoimg
    ```
 
 2. Install dependencies
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 
-3. Configure environment variables (optional)
-   ```
-   export PORT=8080  # Optional: Set custom port (defaults to 3000)
-   ```
-
-4. Run the server
-   ```
+3. Run the server
+   ```bash
    python main.py
    ```
 
-### Deployment
+   The server starts on `http://localhost:3000` by default. Set the `PORT` environment variable to change it.
 
-FPOimg is designed to work with Google App Engine, but can be deployed to any platform that supports Python web applications.
+### Running Tests
+
+```bash
+pytest tests/ -v --cov=fpoimg --cov-report=term-missing
+```
+
+## Project Structure
+
+```
+fpoimg/
+├── app.py              — Flask app factory
+├── routes.py           — Route definitions
+├── generators/
+│   ├── image.py        — Core image generation
+│   ├── gradient.py     — Gradient backgrounds + presets
+│   ├── text.py         — Text layout and font scaling
+│   └── formats.py      — Image serialization (PNG)
+└── utils/
+    ├── colors.py       — Color parsing utilities
+    └── params.py       — Dimension clamping + constants
+```
 
 ## License
 
@@ -85,3 +143,10 @@ FPOimg is designed to work with Google App Engine, but can be deployed to any pl
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+FPOimg has been providing free placeholder images for over 12 years. Help keep it running:
+
+- [Buy Me a Coffee](https://buymeacoffee.com/kylehayes)
+- [GitHub Sponsors](https://github.com/sponsors/kylehayes)
