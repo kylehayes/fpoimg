@@ -89,31 +89,13 @@
             margin-bottom: 3rem;
         }
         .custom-builder h3 {
-            margin-bottom: 1rem;
-        }
-        .builder-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: end;
             margin-bottom: 1.5rem;
         }
-        .builder-controls .control-group {
-            flex: 1;
-            min-width: 140px;
-        }
-        .builder-controls label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-        .builder-controls input, .builder-controls select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.95rem;
+        .builder-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
         .builder-preview {
             border-radius: 8px;
@@ -137,7 +119,7 @@
             gap: 1rem;
         }
         .builder-url button {
-            padding: 0.4rem 1rem;
+            padding: 0.5rem 1.25rem;
             border: none;
             border-radius: 6px;
             background: var(--primary);
@@ -145,6 +127,10 @@
             cursor: pointer;
             font-weight: 600;
             white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .builder-url button:hover {
+            background: var(--secondary);
         }
     </style>
 </head>
@@ -152,13 +138,19 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="/" class="logo">FPO<span>Img</span></a>
-                <nav>
+                <div class="logo">FPO<span>Img</span></div>
+                <button class="hamburger-menu" id="hamburger-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav id="main-nav">
                     <ul>
                         <li><a href="/#generator">Generator</a></li>
                         <li><a href="/#how-to-use">How to Use</a></li>
                         <li><a href="/gradients" style="font-weight: 700;">Gradients</a></li>
                         <li><a href="/#examples">Examples</a></li>
+                        <li><a href="/#support">Support Us</a></li>
                     </ul>
                 </nav>
             </div>
@@ -254,6 +246,7 @@
                     <a href="/#how-to-use">How to Use</a>
                     <a href="/gradients">Gradients</a>
                     <a href="/#examples">Examples</a>
+                    <a href="/#support">Support Us</a>
                 </div>
             </div>
         </div>
@@ -261,6 +254,38 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Hamburger menu
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mainNav = document.getElementById('main-nav');
+        const menuOverlay = document.createElement('div');
+        menuOverlay.className = 'menu-overlay';
+        document.body.appendChild(menuOverlay);
+
+        function toggleMenu() {
+            hamburgerBtn.classList.toggle('active');
+            mainNav.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            const isExpanded = hamburgerBtn.classList.contains('active');
+            hamburgerBtn.setAttribute('aria-expanded', isExpanded);
+            document.body.style.overflow = isExpanded ? 'hidden' : '';
+        }
+
+        hamburgerBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        mainNav.querySelectorAll('a').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleMenu();
+            });
+        });
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                hamburgerBtn.classList.remove('active');
+                mainNav.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
         // Color picker sync
         function syncColorPair(pickerId, textId) {
             const picker = document.getElementById(pickerId);
