@@ -49,3 +49,8 @@ nosetests.xml
 .project
 .pydevproject
 .vscode
+
+# Coverage
+htmlcov/
+coverage.xml
+.coverage

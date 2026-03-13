@@ -1,0 +1,13 @@
+[run]
+source = .
+omit =
+    tests/*
+    venv/*
+    upload_static_to_s3.py
+
+[report]
+show_missing = true
+skip_empty = true
+exclude_lines =
+    if __name__ == .__main__.
+    pragma: no cover
