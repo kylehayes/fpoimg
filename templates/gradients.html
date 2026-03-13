@@ -93,9 +93,21 @@
         }
         .builder-controls {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) {
+            .builder-controls {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .builder-controls:last-of-type {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .builder-controls .control-group label {
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
         }
         .builder-preview {
             border-radius: 8px;
@@ -178,6 +190,16 @@
                         <input type="number" id="b-height" value="300" min="10" max="5000">
                     </div>
                     <div class="control-group">
+                        <label for="b-angle">Angle (°)</label>
+                        <input type="number" id="b-angle" value="135" min="0" max="360">
+                    </div>
+                    <div class="control-group">
+                        <label for="b-caption">Caption</label>
+                        <input type="text" id="b-caption" value="" placeholder="Optional">
+                    </div>
+                </div>
+                <div class="builder-controls">
+                    <div class="control-group">
                         <label for="b-color1">Start Color</label>
                         <div class="color-input-group">
                             <input type="color" id="b-color1-picker" value="#FF5E3A" class="color-picker">
@@ -192,19 +214,11 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label for="b-angle">Angle (°)</label>
-                        <input type="number" id="b-angle" value="135" min="0" max="360">
-                    </div>
-                    <div class="control-group">
                         <label for="b-text-color">Text Color</label>
                         <div class="color-input-group">
                             <input type="color" id="b-text-color-picker" value="#ffffff" class="color-picker">
                             <input type="text" id="b-text-color" value="#ffffff" placeholder="#ffffff">
                         </div>
-                    </div>
-                    <div class="control-group">
-                        <label for="b-caption">Caption</label>
-                        <input type="text" id="b-caption" value="" placeholder="Optional">
                     </div>
                 </div>
                 <div class="builder-preview">
