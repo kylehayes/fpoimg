@@ -106,10 +106,16 @@ def show_image_width_height_caption(width, height, caption):
   return generate(width, height, caption, bg_color_rgb, text_color_rgb)
 
 
-def serve_pil_image(pil_img):
+def pil_image_to_bytes(pil_img):
+  """Convert a PIL image to PNG bytes in a BytesIO buffer."""
   img_io = io.BytesIO()
   pil_img.save(img_io, 'PNG', quality=70)
   img_io.seek(0)
+  return img_io
+
+
+def serve_pil_image(pil_img):
+  img_io = pil_image_to_bytes(pil_img)
   response = send_file(img_io, mimetype='image/png')
   # Cache for 1 year - same URL always produces identical image
   response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
@@ -270,13 +276,13 @@ def render_cta_layout(im: Image.Image, width: int, height: int, dim_text: str, t
         im.paste(qr_img, (qr_x, qr_y))
 
 
-def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
+def generate_image(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200), nosupport=False):
+  """Generate a placeholder PIL image. Pure logic, no Flask dependency."""
   size = (width,height)       # size of the image to create
   im = Image.new('RGB', size, bg_color) # create the image
 
   dim_text = str(width) + u"\u00D7" + str(height) # \u00D7 is multiplication sign
 
-  nosupport = request.args.get('nosupport', '0') == '1'
   if should_show_cta(width, height, nosupport):
     render_cta_layout(im, width, height, dim_text, text_color)
   else:
@@ -290,6 +296,12 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
       draw.text(pos, text, fill=text_color, font=font)
     del draw
 
+  return im
+
+
+def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
+  nosupport = request.args.get('nosupport', '0') == '1'
+  im = generate_image(width, height, caption, bg_color, text_color, nosupport)
   return serve_pil_image(im)
 
 
