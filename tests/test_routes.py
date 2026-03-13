@@ -127,19 +127,16 @@ class TestColors:
 
 
 class TestCacheHeaders:
-    def test_cache_control_present(self, client):
+    def test_no_cache_headers(self, client):
         resp = client.get("/200x200")
         cc = resp.headers.get("Cache-Control", "")
-        assert "public" in cc
-        assert "max-age=31536000" in cc
-        assert "immutable" in cc
+        assert "no-store" in cc
+        assert "no-cache" in cc
+        assert "max-age=0" in cc
 
-
-class TestNosupportParam:
-    def test_nosupport_returns_image(self, client):
-        resp = client.get("/400x400?nosupport=1")
-        assert resp.status_code == 200
-        assert resp.content_type == "image/png"
+    def test_pragma_no_cache(self, client):
+        resp = client.get("/200x200")
+        assert resp.headers.get("Pragma") == "no-cache"
 
 
 class TestErrorHandler:

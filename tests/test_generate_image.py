@@ -1,6 +1,5 @@
 """Tests for generate_image() — the pure image creation logic."""
 import pytest
-from unittest.mock import patch
 from PIL import Image
 from main import generate_image
 
@@ -29,12 +28,6 @@ class TestGenerateImage:
     def test_with_caption(self):
         img = generate_image(400, 200, caption="Test Caption")
         assert img.size == (400, 200)
-
-    def test_nosupport_disables_cta(self):
-        """Even with CTA frequency on, nosupport should prevent CTA."""
-        with patch("main._CTA_FREQUENCY", 1):
-            img = generate_image(500, 500, nosupport=True)
-            assert img.size == (500, 500)
 
     def test_rgb_mode(self):
         img = generate_image(100, 100)

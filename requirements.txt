@@ -8,7 +8,6 @@ click==8.1.7
 
 # Image generation
 pillow==12.1.1
-qrcode[pil]==8.0
 
 # HTTP
 requests==2.32.5
