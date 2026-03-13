@@ -1,6 +1,6 @@
 """Tests for hex_to_rgb color conversion."""
 import pytest
-from main import hex_to_rgb
+from fpoimg.utils.colors import hex_to_rgb
 
 
 class TestHexToRgb:

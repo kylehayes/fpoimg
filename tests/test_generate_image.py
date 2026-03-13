@@ -1,7 +1,7 @@
 """Tests for generate_image() — the pure image creation logic."""
 import pytest
 from PIL import Image
-from main import generate_image
+from fpoimg.generators.image import generate_image
 
 
 class TestGenerateImage:
