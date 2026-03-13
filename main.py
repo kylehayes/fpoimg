@@ -74,10 +74,16 @@ def show_image_width_height_caption(width, height, caption):
   return generate(width, height, caption, bg_color_rgb, text_color_rgb)
 
 
-def serve_pil_image(pil_img):
+def pil_image_to_bytes(pil_img):
+  """Convert a PIL image to PNG bytes in a BytesIO buffer."""
   img_io = io.BytesIO()
   pil_img.save(img_io, 'PNG', quality=70)
   img_io.seek(0)
+  return img_io
+
+
+def serve_pil_image(pil_img):
+  img_io = pil_image_to_bytes(pil_img)
   response = send_file(img_io, mimetype='image/png')
   # Prevent caching so clients always get fresh images
   response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
@@ -180,7 +186,9 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=[]):
 
   return layouts
 
-def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
+
+def generate_image(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
+  """Generate a placeholder PIL image. Pure logic, no Flask dependency."""
   size = (width,height)       # size of the image to create
   im = Image.new('RGB', size, bg_color) # create the image
 
@@ -196,6 +204,11 @@ def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,
     draw.text(pos, text, fill=text_color, font=font)
   del draw
 
+  return im
+
+
+def generate(width, height, caption="", bg_color=(100,100,100), text_color=(200,200,200)):
+  im = generate_image(width, height, caption, bg_color, text_color)
   return serve_pil_image(im)
 
 
