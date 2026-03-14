@@ -26,6 +26,21 @@ FPOimg (For Placement Only Image) is a lightweight Flask-based web service that 
 /500x200/Hello  → 500×200 image with "Hello" caption
 ```
 
+### Multiline Text
+
+Captions support explicit line breaks and automatic word wrapping:
+
+```
+/400x300?text=Line+1\nLine+2                    → Explicit line break
+/400x300/Title\nSubtitle                         → Line break in URL path
+/200x200?text=Long+caption+that+wraps+automatically → Auto-wraps to fit
+```
+
+Combine both — explicit breaks with auto-wrap on each segment:
+```
+/300x400?text=Heading\nThis+is+a+longer+description+that+will+wrap+automatically
+```
+
 ### Gradient Backgrounds
 
 Add beautiful gradients with a single parameter:
@@ -70,7 +85,7 @@ Customize your images with query parameters:
 |-----------|-------------|---------|
 | `bg_color` | Background color (hex, 3 or 6 digit) | `#C7C7C7` |
 | `text_color` | Text color (hex, 3 or 6 digit) | `#8F8F8F` |
-| `text` | Caption text | None |
+| `text` | Caption text (supports `\n` for line breaks, auto-wraps long text) | None |
 | `gradient` | Gradient preset name or `color1,color2` hex | None |
 | `gradient_angle` | Gradient direction in degrees (CSS-style: 0°=up, 90°=right, 180°=down) | Preset default or `180` |
 
