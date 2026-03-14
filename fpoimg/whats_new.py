@@ -6,4 +6,4 @@ Set to None or empty string to disable.
 """
 
 # Current announcement — keep it short and sweet
-WHATS_NEW = "Gradient backgrounds are here! Try ?gradient=sunset — Browse all: fpoimg.com/gradients"
+WHATS_NEW = "Gradient backgrounds are here! Try ?gradient=sunset - Browse all: fpoimg.com/gradients"
