@@ -5,8 +5,9 @@ from flask import Blueprint, request, render_template, send_file
 from .utils.colors import parse_color
 from .utils.params import clamp_dimension, DEFAULT_BG_COLOR, DEFAULT_TEXT_COLOR
 from .generators.image import generate_image
-from .generators.formats import image_to_bytes, FORMAT_MIMETYPES
+from .generators.formats import image_to_bytes, FORMAT_MIMETYPES, EXTENSION_MAP
 from .generators.gradient import parse_gradient_param, PRESETS
+from .generators.svg import generate_svg
 from .whats_new import WHATS_NEW
 
 logger = logging.getLogger(__name__)
@@ -33,22 +34,46 @@ def gradients():
     return render_template('./gradients.html', presets=PRESETS)
 
 
+# --- Image routes ---
+# Square
 @routes_bp.route('/<int:square>')
 def show_image_square(square):
     return _generate_response(square, square)
 
 
+@routes_bp.route('/<int:square>.<ext>')
+def show_image_square_ext(square, ext):
+    return _generate_response(square, square, fmt=_resolve_format(ext))
+
+
+# Width x Height
 @routes_bp.route('/<int:width>x<int:height>')
 def show_image_width_height(width, height):
     return _generate_response(width, height)
 
 
+@routes_bp.route('/<int:width>x<int:height>.<ext>')
+def show_image_width_height_ext(width, height, ext):
+    return _generate_response(width, height, fmt=_resolve_format(ext))
+
+
+# Width x Height with caption
 @routes_bp.route('/<int:width>x<int:height>/<caption>')
 def show_image_width_height_caption(width, height, caption):
     return _generate_response(width, height, caption)
 
 
-def _generate_response(width, height, caption=None):
+@routes_bp.route('/<int:width>x<int:height>.<ext>/<caption>')
+def show_image_width_height_ext_caption(width, height, ext, caption):
+    return _generate_response(width, height, caption, fmt=_resolve_format(ext))
+
+
+def _resolve_format(ext):
+    """Resolve a file extension to a format name, defaulting to PNG."""
+    return EXTENSION_MAP.get(ext.lower(), "PNG")
+
+
+def _generate_response(width, height, caption=None, fmt="PNG"):
     """Parse request params, generate image, and return HTTP response."""
     width = clamp_dimension(width)
     height = clamp_dimension(height)
@@ -63,16 +88,19 @@ def _generate_response(width, height, caption=None):
     gradient = parse_gradient_param(request.args.get('gradient', ''))
     gradient_angle = request.args.get('gradient_angle', None, type=int)
 
-    logger.info("Showing image width='%d' height='%d' caption='%s' bg_color='%s' text_color='%s' gradient='%s'",
-                width, height, caption, bg_color, text_color, request.args.get('gradient', ''))
+    logger.info("Showing image width='%d' height='%d' caption='%s' fmt='%s' gradient='%s'",
+                width, height, caption, fmt, request.args.get('gradient', ''))
 
-    im = generate_image(width, height, caption, bg_color, text_color,
-                        gradient=gradient, gradient_angle=gradient_angle)
-
-    # Serialize
-    fmt = "PNG"
-    mimetype = FORMAT_MIMETYPES[fmt]
-    img_io = image_to_bytes(im, fmt)
+    # SVG is a completely different path
+    if fmt == "SVG":
+        img_io = generate_svg(width, height, caption, bg_color, text_color,
+                              gradient=gradient, gradient_angle=gradient_angle)
+        mimetype = FORMAT_MIMETYPES["SVG"]
+    else:
+        im = generate_image(width, height, caption, bg_color, text_color,
+                            gradient=gradient, gradient_angle=gradient_angle)
+        mimetype = FORMAT_MIMETYPES.get(fmt, FORMAT_MIMETYPES["PNG"])
+        img_io = image_to_bytes(im, fmt)
 
     response = send_file(img_io, mimetype=mimetype)
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'

@@ -30,4 +30,14 @@ FORMAT_MIMETYPES = {
     "PNG": "image/png",
     "JPEG": "image/jpeg",
     "WEBP": "image/webp",
+    "SVG": "image/svg+xml",
+}
+
+# Map file extensions to format names
+EXTENSION_MAP = {
+    "png": "PNG",
+    "jpg": "JPEG",
+    "jpeg": "JPEG",
+    "webp": "WEBP",
+    "svg": "SVG",
 }
