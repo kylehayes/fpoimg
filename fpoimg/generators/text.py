@@ -1,5 +1,5 @@
 """Text layout and font handling for placeholder images."""
-from PIL import ImageFont
+from PIL import ImageFont, ImageDraw, Image
 
 
 def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=None):
@@ -66,3 +66,42 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=None):
         top += height + line_spacing
 
     return layouts
+
+
+def wrap_text(text, font_path, font_size, max_width):
+    """Word-wrap text to fit within a given pixel width.
+
+    Args:
+        text: The text string to wrap
+        font_path: Path to the TTF font file
+        font_size: Font size in points
+        max_width: Maximum line width in pixels
+
+    Returns:
+        List of strings, one per line
+    """
+    font = ImageFont.truetype(font_path, font_size)
+    # Use a dummy image to measure text
+    dummy = Image.new('RGB', (1, 1))
+    draw = ImageDraw.Draw(dummy)
+
+    words = text.split(' ')
+    lines = []
+    current_line = []
+
+    for word in words:
+        test_line = ' '.join(current_line + [word])
+        bbox = draw.textbbox((0, 0), test_line, font=font)
+        width = bbox[2] - bbox[0]
+
+        if width <= max_width or not current_line:
+            current_line.append(word)
+        else:
+            lines.append(' '.join(current_line))
+            current_line = [word]
+
+    if current_line:
+        lines.append(' '.join(current_line))
+
+    del draw
+    return lines

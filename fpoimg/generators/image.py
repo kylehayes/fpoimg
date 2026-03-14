@@ -1,7 +1,7 @@
 """Core placeholder image generation."""
 from PIL import Image, ImageDraw
 
-from .text import layout_text
+from .text import layout_text, wrap_text
 from .gradient import create_gradient
 
 # Font paths (relative to working directory)
@@ -43,7 +43,17 @@ def generate_image(width, height, caption="",
     draw = ImageDraw.Draw(im)
     text_lines = [(dim_text, FONT_BOLD, DIM_FONT_SIZE)]
     if caption:
-        text_lines.append((caption, FONT_REGULAR, CAPTION_FONT_SIZE))
+        # Support explicit \n line breaks (literal backslash-n from URL)
+        caption_parts = caption.replace('\\n', '\n').split('\n')
+
+        for part in caption_parts:
+            part = part.strip()
+            if not part:
+                continue
+            # Auto-wrap lines that exceed 80% of image width
+            wrapped = wrap_text(part, FONT_REGULAR, CAPTION_FONT_SIZE, int(width * 0.8))
+            for line in wrapped:
+                text_lines.append((line, FONT_REGULAR, CAPTION_FONT_SIZE))
 
     text_layouts = layout_text(width, height, 0, text_lines)
     for text, font, pos in text_layouts:
