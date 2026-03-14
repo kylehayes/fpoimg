@@ -7,6 +7,7 @@ from .utils.params import clamp_dimension, DEFAULT_BG_COLOR, DEFAULT_TEXT_COLOR
 from .generators.image import generate_image
 from .generators.formats import image_to_bytes, FORMAT_MIMETYPES
 from .generators.gradient import parse_gradient_param, PRESETS
+from .whats_new import WHATS_NEW
 
 logger = logging.getLogger(__name__)
 
@@ -76,4 +77,6 @@ def _generate_response(width, height, caption=None):
     response = send_file(img_io, mimetype=mimetype)
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
+    if WHATS_NEW:
+        response.headers['X-FPOImg-New'] = WHATS_NEW
     return response

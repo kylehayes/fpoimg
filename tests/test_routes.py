@@ -179,6 +179,26 @@ class TestGradientRoutes:
         assert b"Gradient" in resp.data
 
 
+class TestWhatsNewHeader:
+    def test_header_present_on_image(self, client):
+        resp = client.get("/200x200")
+        assert "X-FPOImg-New" in resp.headers
+        assert "fpoimg.com" in resp.headers["X-FPOImg-New"]
+
+    def test_header_not_on_html_pages(self, client):
+        resp = client.get("/")
+        assert "X-FPOImg-New" not in resp.headers
+
+    def test_header_present_with_gradient(self, client):
+        resp = client.get("/200x200?gradient=sunset")
+        assert "X-FPOImg-New" in resp.headers
+
+    def test_header_can_be_disabled(self, client, monkeypatch):
+        monkeypatch.setattr("fpoimg.routes.WHATS_NEW", "")
+        resp = client.get("/200x200")
+        assert "X-FPOImg-New" not in resp.headers
+
+
 class TestErrorHandler:
     def test_404_returns_json(self, client):
         resp = client.get("/not/a/valid/route/at/all")
