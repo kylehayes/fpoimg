@@ -112,7 +112,9 @@ def parse_gradient_param(gradient_str):
 
 
 def _parse_hex(value):
-    """Parse a hex color (with or without #) to an RGB tuple."""
+    """Parse a hex color or named color to an RGB tuple."""
+    from ..utils.colors import resolve_color
+    value = resolve_color(value.strip())
     value = value.lstrip('#')
     if len(value) == 3:
         value = ''.join(c * 2 for c in value)

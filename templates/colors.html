@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Named Colors - FPOImg.com</title>
+    <link rel="stylesheet" href="/static/css/styles2.css">
+    <style>
+        .color-family {
+            margin-bottom: 3rem;
+        }
+        .family-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e1e4e8;
+        }
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        .color-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+            cursor: pointer;
+        }
+        .color-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        .color-swatch {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .color-info {
+            padding: 0.75rem 1rem;
+        }
+        .color-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+        .color-hex {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        .color-card .copied-toast {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.75);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .color-card {
+            position: relative;
+        }
+        .color-card.show-toast .copied-toast {
+            display: block;
+        }
+        .usage-examples {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+        .usage-examples h3 {
+            margin-bottom: 1rem;
+        }
+        .usage-examples code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .usage-examples .example-block {
+            background: #f5f5f5;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin: 0.5rem 0;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">FPO<span>Img</span></div>
+                <button class="hamburger-menu" id="hamburger-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="/#generator">Generator</a></li>
+                        <li><a href="/#how-to-use">How to Use</a></li>
+                        <li><a href="/gradients">Gradients</a></li>
+                        <li><a href="/colors" style="font-weight: 700;">Colors</a></li>
+                        <li><a href="/#examples">Examples</a></li>
+                        <li><a href="/#support">Support Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" style="padding: 2rem 0;">
+        <div class="container">
+            <h1>Named Colors</h1>
+            <p>Use any of the 148 CSS named colors instead of hex codes. Just type the color name in your URL — it's that easy.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="usage-examples">
+                <h3>🎨 How to Use Named Colors</h3>
+                <p>Named colors work everywhere hex colors work — in the URL path or as query parameters:</p>
+                <div class="example-block">/400x300/tomato/white</div>
+                <div class="example-block">/300/steelblue</div>
+                <div class="example-block">/800x600?bg_color=coral&text_color=navy</div>
+                <div class="example-block">/500x300?gradient=tomato,steelblue</div>
+                <p style="margin-top: 1rem; color: var(--gray);">Click any color below to copy its name.</p>
+            </div>
+
+            {% for family_name, color_names in families.items() %}
+            <div class="color-family">
+                <h3 class="family-title">{{ family_name }}</h3>
+                <div class="color-grid">
+                    {% for name in color_names %}
+                    <div class="color-card" data-color="{{ name }}" onclick="copyColor(this, '{{ name }}')">
+                        <div class="color-swatch" style="background-color: #{{ named_colors[name] }};"></div>
+                        <div class="color-info">
+                            <div class="color-name">{{ name }}</div>
+                            <div class="color-hex">#{{ named_colors[name] }}</div>
+                        </div>
+                        <div class="copied-toast">Copied!</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">FPO<span>Img</span></div>
+                <div class="footer-links">
+                    <a href="/#generator">Generator</a>
+                    <a href="/#how-to-use">How to Use</a>
+                    <a href="/gradients">Gradients</a>
+                    <a href="/colors">Colors</a>
+                    <a href="/#examples">Examples</a>
+                    <a href="/#support">Support Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    function copyColor(card, name) {
+        navigator.clipboard.writeText(name).then(function() {
+            card.classList.add('show-toast');
+            setTimeout(function() {
+                card.classList.remove('show-toast');
+            }, 1200);
+        });
+    }
+
+    // Hamburger menu
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mainNav = document.getElementById('main-nav');
+        const menuOverlay = document.createElement('div');
+        menuOverlay.className = 'menu-overlay';
+        document.body.appendChild(menuOverlay);
+
+        function toggleMenu() {
+            hamburgerBtn.classList.toggle('active');
+            mainNav.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            const isExpanded = hamburgerBtn.classList.contains('active');
+            hamburgerBtn.setAttribute('aria-expanded', isExpanded);
+            document.body.style.overflow = isExpanded ? 'hidden' : '';
+        }
+
+        hamburgerBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        mainNav.querySelectorAll('a').forEach(function(item) {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) toggleMenu();
+            });
+        });
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                hamburgerBtn.classList.remove('active');
+                mainNav.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+    </script>
+</body>
+</html>
