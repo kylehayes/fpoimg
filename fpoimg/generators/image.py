@@ -15,7 +15,7 @@ CAPTION_FONT_SIZE = 30
 
 def generate_image(width, height, caption="",
                    bg_color=(100, 100, 100), text_color=(200, 200, 200),
-                   gradient=None, gradient_angle=None):
+                   gradient=None, gradient_angle=None, show_dims=True):
     """Generate a placeholder PIL image.
 
     Args:
@@ -41,7 +41,9 @@ def generate_image(width, height, caption="",
     dim_text = f"{width}\u00D7{height}"
 
     draw = ImageDraw.Draw(im)
-    text_lines = [(dim_text, FONT_BOLD, DIM_FONT_SIZE)]
+    text_lines = []
+    if show_dims:
+        text_lines.append((dim_text, FONT_BOLD, DIM_FONT_SIZE))
     if caption:
         # Support explicit \n line breaks (literal backslash-n from URL)
         caption_parts = caption.replace('\\n', '\n').split('\n')
@@ -55,9 +57,12 @@ def generate_image(width, height, caption="",
             for line in wrapped:
                 text_lines.append((line, FONT_REGULAR, CAPTION_FONT_SIZE))
 
-    text_layouts = layout_text(width, height, 10, text_lines)
-    for text, font, pos in text_layouts:
-        draw.text(pos, text, fill=text_color, font=font)
+    if text_lines:
+        text_layouts = layout_text(width, height, 10, text_lines)
+        for text, font, pos in text_layouts:
+            draw.text(pos, text, fill=text_color, font=font)
     del draw
+
+    return im
 
     return im

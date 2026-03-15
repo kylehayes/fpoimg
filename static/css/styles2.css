@@ -129,6 +129,26 @@ nav a:hover {
     flex-direction: column;
 }
 
+.checkbox-group {
+    justify-content: flex-end;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    height: 46px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: #666;
+}
+
 .color-input-group {
     display: flex;
     align-items: center;
