@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const gradientColor1 = document.getElementById('gradient-color1');
     const gradientColor2 = document.getElementById('gradient-color2');
     const gradientAngle = document.getElementById('gradient-angle');
+    const hideDimsInput = document.getElementById('hide-dims');
     const generateBtn = document.getElementById('generate-btn');
     const previewImage = document.getElementById('preview-image');
     const urlDisplay = document.getElementById('url-display');
@@ -142,7 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
         previewFrame.style.width = `${width}px`;
         previewFrame.style.height = `${height}px`;
         
+        const hideDims = hideDimsInput && hideDimsInput.checked;
+
         let params = [`text=${encodeURIComponent(caption)}`, `text_color=${textColor}`];
+
+        if (hideDims) {
+            params.push('dims=false');
+        }
 
         if (gradient && gradient !== '') {
             if (gradient === 'custom') {
@@ -176,10 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('input', function() {
             clearTimeout(input.timeout);
             input.timeout = setTimeout(updatePreview, 300);
-        });
-    });
-});
-
         });
     });
 });
