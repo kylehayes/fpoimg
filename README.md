@@ -69,6 +69,31 @@ Add beautiful gradients with a single parameter:
 
 Browse all presets with live previews at [fpoimg.com/gradients](https://fpoimg.com/gradients).
 
+### Named Colors
+
+Use any of the 148 CSS named colors instead of hex codes — in the URL path or as query parameters:
+
+```
+/400x300/tomato/white             → Tomato background with white text
+/300/steelblue                    → 300×300 square with steelblue background
+/800x600?bg_color=coral&text_color=navy  → Coral background, navy text
+/500x300?gradient=tomato,steelblue       → Gradient using named colors
+```
+
+Named colors work everywhere hex codes work: `bg_color`, `text_color`, gradient custom colors, and URL path colors.
+
+Browse all 148 colors with live swatches at [fpoimg.com/colors](https://fpoimg.com/colors).
+
+### URL Path Colors
+
+Set background and text colors directly in the URL path (hex or named):
+
+```
+/400x300/FF5733/FFFFFF            → Orange background, white text (hex)
+/400x300/tomato/white             → Same thing with named colors
+/300/steelblue                    → Square with just a background color
+```
+
 ### URL Parameters
 
 Customize your images with query parameters:
@@ -83,8 +108,8 @@ Customize your images with query parameters:
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `bg_color` | Background color (hex, 3 or 6 digit) | `#C7C7C7` |
-| `text_color` | Text color (hex, 3 or 6 digit) | `#8F8F8F` |
+| `bg_color` | Background color (hex or [named color](https://fpoimg.com/colors)) | `#C7C7C7` |
+| `text_color` | Text color (hex or [named color](https://fpoimg.com/colors)) | `#8F8F8F` |
 | `text` | Caption text (supports `\n` for line breaks, auto-wraps long text) | None |
 | `gradient` | Gradient preset name or `color1,color2` hex | None |
 | `gradient_angle` | Gradient direction in degrees (CSS-style: 0°=up, 90°=right, 180°=down) | Preset default or `180` |
@@ -97,6 +122,7 @@ Customize your images with query parameters:
 |-----|-------------|
 | `/` | Homepage with interactive image generator |
 | `/gradients` | Gradient picker with all presets + custom builder |
+| `/colors` | Named color reference with swatches grouped by family |
 | `/examples` | Example use cases |
 | `/test` | Test gallery with randomized images |
 

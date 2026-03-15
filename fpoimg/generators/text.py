@@ -19,16 +19,19 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=None):
     target_reduction = 0.8  # reduction factor for oversized text
 
     # Initialize fonts and calculate dimensions
-    fonts, text_sizes, text_heights, text_widths = [], [], [], []
+    fonts, text_sizes, text_heights, text_widths, text_tops = [], [], [], [], []
 
     for text, ttf, max_point in list_of_texts:
         font = ImageFont.truetype(ttf, max_point)
         fonts.append(font)
 
-        _, _, width, height = font.getbbox(text)
+        left, top, right, bottom = font.getbbox(text)
+        width = right - left
+        height = bottom - top
         text_sizes.append((width, height))
         text_heights.append(height)
         text_widths.append(width)
+        text_tops.append(top)
 
     total_text_height = sum(text_heights) + (len(list_of_texts) - 1) * line_spacing
     max_text_width = max(text_widths)
@@ -40,30 +43,35 @@ def layout_text(canvas_width, canvas_height, line_spacing, list_of_texts=None):
 
     # Recalculate font sizes and text dimensions after reduction
     if reduction_ratio < 1.0:
-        fonts, text_sizes, text_heights, text_widths = [], [], [], []
+        fonts, text_sizes, text_heights, text_widths, text_tops = [], [], [], [], []
 
         for text, ttf, max_point in list_of_texts:
             new_font_size = max(1, int(reduction_ratio * max_point))
             new_font = ImageFont.truetype(ttf, new_font_size)
             fonts.append(new_font)
 
-            _, _, width, height = new_font.getbbox(text)
+            left, top, right, bottom = new_font.getbbox(text)
+            width = right - left
+            height = bottom - top
             text_sizes.append((width, height))
             text_heights.append(height)
             text_widths.append(width)
+            text_tops.append(top)
 
         total_text_height = sum(text_heights) + (len(list_of_texts) - 1) * line_spacing
 
     # Center vertically
-    top = (canvas_height - total_text_height) / 2
+    cursor_y = (canvas_height - total_text_height) / 2
 
     # Generate layout positions for each text
     layouts = []
     for idx, (text, ttf, max_point) in enumerate(list_of_texts):
         width, height = text_sizes[idx]
         x_position = (canvas_width - width) / 2
-        layouts.append((text, fonts[idx], (x_position, top)))
-        top += height + line_spacing
+        # Offset y by -text_tops to align the visible glyph top with the layout position
+        y_position = cursor_y - text_tops[idx]
+        layouts.append((text, fonts[idx], (x_position, y_position)))
+        cursor_y += height + line_spacing
 
     return layouts
 
