@@ -5,7 +5,7 @@ import io
 
 def generate_svg(width, height, caption="",
                  bg_color=(199, 199, 199), text_color=(143, 143, 143),
-                 gradient=None, gradient_angle=None):
+                 gradient=None, gradient_angle=None, show_dims=True):
     """Generate a placeholder SVG image.
 
     Args:
@@ -37,7 +37,9 @@ def generate_svg(width, height, caption="",
 
     # Build text elements
     text_elements = []
-    lines = [dim_text]
+    lines = []
+    if show_dims:
+        lines.append(dim_text)
 
     if caption:
         caption_parts = caption.replace('\\n', '\n').split('\n')
@@ -52,27 +54,28 @@ def generate_svg(width, height, caption="",
     caption_font_size = dim_font_size * 0.6
     line_height = dim_font_size * 1.4
 
-    total_height = dim_font_size + (total_lines - 1) * line_height
-    start_y = (height - total_height) / 2 + dim_font_size * 0.8
+    if total_lines > 0:
+        total_height = dim_font_size + (total_lines - 1) * line_height
+        start_y = (height - total_height) / 2 + dim_font_size * 0.8
 
-    for i, line in enumerate(lines):
-        escaped = html.escape(line)
-        if i == 0:
-            # Dimension text — bold
-            fs = dim_font_size
-            weight = "bold"
-        else:
-            fs = caption_font_size
-            weight = "normal"
+        for i, line in enumerate(lines):
+            escaped = html.escape(line)
+            if show_dims and i == 0:
+                # Dimension text — bold
+                fs = dim_font_size
+                weight = "bold"
+            else:
+                fs = caption_font_size
+                weight = "normal"
 
-        y = start_y + i * line_height
-        text_elements.append(
-            f'  <text x="{width / 2}" y="{y}" '
-            f'font-family="Arial, Helvetica, sans-serif" '
-            f'font-size="{fs:.1f}" font-weight="{weight}" '
-            f'fill="{text_hex}" text-anchor="middle">'
-            f'{escaped}</text>'
-        )
+            y = start_y + i * line_height
+            text_elements.append(
+                f'  <text x="{width / 2}" y="{y}" '
+                f'font-family="Arial, Helvetica, sans-serif" '
+                f'font-size="{fs:.1f}" font-weight="{weight}" '
+                f'fill="{text_hex}" text-anchor="middle">'
+                f'{escaped}</text>'
+            )
 
     texts_str = "\n".join(text_elements)
     defs_str = f"\n  <defs>{defs}\n  </defs>" if defs else ""

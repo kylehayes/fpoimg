@@ -169,11 +169,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Make all inputs update on change
+    hideDimsInput.addEventListener('change', updatePreview);
+
     [widthInput, heightInput, captionInput, bgColorInput, textColorInput,
      gradientColor1, gradientColor2, gradientAngle].forEach(input => {
         input.addEventListener('input', function() {
             clearTimeout(input.timeout);
             input.timeout = setTimeout(updatePreview, 300);
+        });
+    });
+});
+
         });
     });
 });

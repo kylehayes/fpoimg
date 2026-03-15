@@ -84,6 +84,17 @@ Named colors work everywhere hex codes work: `bg_color`, `text_color`, gradient 
 
 Browse all 148 colors with live swatches at [fpoimg.com/colors](https://fpoimg.com/colors).
 
+### Hide Dimensions
+
+Remove the dimension label for a clean placeholder background:
+
+```
+/800x600?dims=false                              → No dimension text
+/800x600/Hello?dims=false                        → Caption only, no "800×600"
+/800x600?dims=false&gradient=sunset               → Clean gradient, no text
+/800x600?dims=false&gradient=ocean&text=Hero      → Gradient with caption only
+```
+
 ### URL Path Colors
 
 Set background and text colors directly in the URL path (hex or named):
@@ -113,6 +124,7 @@ Customize your images with query parameters:
 | `text` | Caption text (supports `\n` for line breaks, auto-wraps long text) | None |
 | `gradient` | Gradient preset name or `color1,color2` hex | None |
 | `gradient_angle` | Gradient direction in degrees (CSS-style: 0°=up, 90°=right, 180°=down) | Preset default or `180` |
+| `dims` | Show dimension text (`true` or `false`) | `true` |
 
 > **Note:** When `gradient` is set, `bg_color` is ignored. Omit `gradient` for a solid color background.
 

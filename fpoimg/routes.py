@@ -129,6 +129,9 @@ def _generate_response(width, height, caption=None, fmt="PNG",
         text_color = parse_color(request.args.get('text_color', DEFAULT_TEXT_COLOR),
                                  DEFAULT_TEXT_COLOR)
 
+    # Dims toggle (show dimension text by default)
+    show_dims = request.args.get('dims', 'true').lower() != 'false'
+
     # Gradient support
     gradient = parse_gradient_param(request.args.get('gradient', ''))
     gradient_angle = request.args.get('gradient_angle', None, type=int)
@@ -141,11 +144,13 @@ def _generate_response(width, height, caption=None, fmt="PNG",
     # SVG is a completely different path
     if fmt == "SVG":
         img_io = generate_svg(width, height, caption, bg_color, text_color,
-                              gradient=gradient, gradient_angle=gradient_angle)
+                              gradient=gradient, gradient_angle=gradient_angle,
+                              show_dims=show_dims)
         mimetype = FORMAT_MIMETYPES["SVG"]
     else:
         im = generate_image(width, height, caption, bg_color, text_color,
-                            gradient=gradient, gradient_angle=gradient_angle)
+                            gradient=gradient, gradient_angle=gradient_angle,
+                            show_dims=show_dims)
         mimetype = FORMAT_MIMETYPES.get(fmt, FORMAT_MIMETYPES["PNG"])
         img_io = image_to_bytes(im, fmt)
 
