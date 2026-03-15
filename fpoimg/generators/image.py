@@ -55,7 +55,7 @@ def generate_image(width, height, caption="",
             for line in wrapped:
                 text_lines.append((line, FONT_REGULAR, CAPTION_FONT_SIZE))
 
-    text_layouts = layout_text(width, height, 0, text_lines)
+    text_layouts = layout_text(width, height, 10, text_lines)
     for text, font, pos in text_layouts:
         draw.text(pos, text, fill=text_color, font=font)
     del draw
