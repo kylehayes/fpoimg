@@ -358,6 +358,7 @@
         copyBtn.addEventListener('click', function() {
             navigator.clipboard.writeText(urlSpan.textContent).then(() => {
                 copyBtn.textContent = 'Copied!';
+                window.fpoAnalytics?.track('image_url_copy', 'gradient_builder');
                 setTimeout(() => copyBtn.textContent = 'Copy URL', 2000);
             });
         });
@@ -371,6 +372,7 @@
                 const url = `https://fpoimg.com/800x600?gradient=${name}&text_color=ffffff`;
                 navigator.clipboard.writeText(url).then(() => {
                     this.textContent = 'Copied!';
+                    window.fpoAnalytics?.track('image_url_copy', 'gradient_preset');
                     setTimeout(() => this.textContent = 'Copy URL', 2000);
                 });
             });
@@ -384,5 +386,6 @@
         });
     });
     </script>
+{% include "discovery/analytics_notice.html" %}
 </body>
 </html>

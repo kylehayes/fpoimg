@@ -1,6 +1,8 @@
 """Flask application factory."""
 import logging
 import json
+import os
+import re
 from flask import Flask
 from werkzeug.exceptions import HTTPException
 
@@ -11,6 +13,11 @@ def create_app():
                 template_folder='../templates',
                 static_folder='../static')
 
+    measurement_id = os.environ.get('GA4_MEASUREMENT_ID', 'G-Q326QZ9K36').strip()
+    app.config['GA4_MEASUREMENT_ID'] = (
+        measurement_id if re.fullmatch(r'G-[A-Z0-9]+', measurement_id) else ''
+    )
+
     # Configure logging
     logging.basicConfig(level=logging.INFO)
 
@@ -20,7 +27,6 @@ def create_app():
 
     # Import here to avoid circular imports (test_gallery is at project root)
     import sys
-    import os
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     from test_gallery import test_gallery_bp
     app.register_blueprint(test_gallery_bp)
