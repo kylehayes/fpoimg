@@ -17,6 +17,8 @@
     table { width: 100%; border-collapse: collapse; font-size: .9rem; }
     th, td { text-align: left; padding: .75rem; border-bottom: 1px solid #d9dfeb; vertical-align: top; }
     th { background: #edf1f8; } .method { color: #17633c; }
+    .support-note { margin: 1.5rem 0; padding: 1rem 1.25rem; border: 1px solid #d9dfeb; border-radius: 8px; background: white; }
+    .support-note p { margin: 0; }
     .muted { color: #506079; } nav ul { padding-left: 1.25rem; }
     @media (max-width: 600px) { article { padding: 1rem; } h2 { font-size: 1.25rem; } }
   </style>
@@ -33,6 +35,9 @@
     <pre><code>&lt;img src="https://fpoimg.com/1200x630?gradient=ocean&amp;amp;text=Blog+Cover&amp;amp;dims=false"
      width="1200" height="630" alt="Blog cover placeholder"&gt;</code></pre>
     <p>Omit the extension for PNG. For other formats use URLs such as <a href="/400x300.webp?text=Card"><code>/400x300.webp?text=Card</code></a> or <a href="/400x300.svg?gradient=sunset"><code>/400x300.svg?gradient=sunset</code></a>.</p>
+    <aside class="support-note" aria-label="Support FPOImg">
+      <p><strong>Using FPOImg in your work?</strong> I'm Kyle Hayes, and I maintain this free, open-source tool. If it saves you time, you can <a data-support-provider="github_sponsors" href="https://github.com/sponsors/kylehayes" target="_blank" rel="noopener">sponsor the project on GitHub</a> or <a data-support-provider="buy_me_a_coffee" href="https://buymeacoffee.com/kylehayes" target="_blank" rel="noopener">buy me a coffee</a>. Support is optional.</p>
+    </aside>
     <nav aria-label="API endpoints">
       <h2>Endpoints</h2>
       <ul>{% for path, item in spec.paths.items() %}
