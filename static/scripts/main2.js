@@ -117,12 +117,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize with default values
     updatePreview();
     
-    generateBtn.addEventListener('click', updatePreview);
+    generateBtn.addEventListener('click', function () {
+        updatePreview();
+        window.fpoAnalytics?.track('image_generate', 'generator');
+    });
     
     copyBtn.addEventListener('click', function() {
         const urlText = urlDisplay.textContent.trim();
         navigator.clipboard.writeText(urlText).then(function() {
             copyBtn.textContent = 'Copied!';
+            window.fpoAnalytics?.track('image_url_copy', 'generator');
             setTimeout(function() {
                 copyBtn.textContent = 'Copy';
             }, 2000);

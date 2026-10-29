@@ -11,3 +11,4 @@
 {% if page_metadata.structured_data is defined %}
 <script type="application/ld+json">{{ page_metadata.structured_data | tojson }}</script>
 {% endif %}
+{% include "discovery/analytics.html" %}
