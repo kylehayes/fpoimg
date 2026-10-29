@@ -1,0 +1,27 @@
+# FPOImg
+
+> {{ description }}
+
+Images are geometric placeholders with text and colors for layouts and mockups.
+PNG is the default; .jpg, .jpeg, .webp, and .svg select other formats.
+GET requests return image bytes. Use the request URL directly as an HTML img src.
+
+## API and reference
+
+- [API documentation]({{ origin }}/docs): Server-rendered endpoint, parameter, default, and response reference.
+- [OpenAPI specification]({{ origin }}/openapi.json): Machine-readable contract for all image routes.
+- [Usage examples]({{ origin }}/examples): Placeholder sizes, captions, and colors.
+- [Gradient presets and builder]({{ origin }}/gradients): Preset and custom gradient backgrounds.
+- [Named color reference]({{ origin }}/colors): CSS names for background, text, and gradient colors.
+
+## Quick start
+
+- Basic PNG: {{ origin }}/800x600
+- Caption: {{ origin }}/400x300?text=Hello+World
+- Gradient: {{ origin }}/1200x630?gradient=ocean&text=Blog+Cover&dims=false
+- SVG: {{ origin }}/400x300.svg?bg_color=steelblue&text_color=white
+
+Prefer query parameters for captions and colors to avoid ambiguous path segments.
+URL-encode query values. Encode # as %23 in hex colors, or omit #.
+Dimensions are clamped to the supported range; consult the API reference for limits.
+The docs and OpenAPI specification describe supported parameters and fallback behavior.

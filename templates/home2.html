@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FPOImg.com - Modern Placeholder Images</title>
+    {% include "discovery/metadata.html" %}
     <link rel="stylesheet" href="static/css/styles2.css">
 </head>
 <body>
@@ -33,8 +33,9 @@
     
     <section class="hero">
         <div class="container">
-            <h1>Modern Placeholder Images</h1>
-            <p>Generate customizable placeholder images for your design and development projects with a simple URL pattern. Now with <strong>gradient backgrounds</strong> and <strong>multiline text</strong>. Fast, free, and flexible.</p>
+            <h1>Free Placeholder Image Generator &amp; API</h1>
+            <p>{{ page_metadata.description }}</p>
+            <p>Get PNG, JPEG, WebP, or SVG images. <a href="/docs">Read the API reference</a> for supported dimensions, formats, and examples.</p>
             <div class="hero-image">
                 <img src="/600x200?gradient=sunset&text_color=ffffff&text=Your+Design+Here" alt="Gradient placeholder example" style="border-radius: 8px; max-width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
             </div>
