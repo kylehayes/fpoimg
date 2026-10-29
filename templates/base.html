@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>FPOImg.com - {% block title %}Home{% endblock %}</title>
+    {% include "discovery/metadata.html" %}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   {% block styles %}
@@ -21,6 +21,7 @@
         <a class="brand" href="/">FPOImg.com</a>
         <ul class="nav">
           <li class="{% block nav_home %}{% endblock %}"><a href="/">Home</a></li>
+          <li><a href="/docs">API Docs</a></li>
           <li class="{% block nav_examples %}{% endblock %}"><a href="/examples">Examples</a></li>
         </ul>
       </div>

@@ -1,0 +1,13 @@
+<title>{{ page_metadata.title }}</title>
+<meta name="description" content="{{ page_metadata.description }}">
+<link rel="canonical" href="{{ page_metadata.canonical }}">
+<link rel="describedby" href="/llms.txt" type="text/plain">
+<link rel="alternate" href="/openapi.json" type="application/json" title="OpenAPI specification">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FPOImg">
+<meta property="og:title" content="{{ page_metadata.title }}">
+<meta property="og:description" content="{{ page_metadata.description }}">
+<meta property="og:url" content="{{ page_metadata.canonical }}">
+{% if page_metadata.structured_data is defined %}
+<script type="application/ld+json">{{ page_metadata.structured_data | tojson }}</script>
+{% endif %}

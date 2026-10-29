@@ -29,6 +29,9 @@ def create_app():
     app.register_blueprint(api_bp)
     app.extensions['fpoimg_spec'] = build_spec(app)
 
+    from .discovery import discovery_bp
+    app.register_blueprint(discovery_bp)
+
     # Error handlers
     @app.errorhandler(HTTPException)
     def handle_http_exception(e):
