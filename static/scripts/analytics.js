@@ -20,21 +20,26 @@
 
     const names = new Set(['image_generate', 'image_url_copy', 'support_click']);
     const contexts = new Set(['generator', 'gradient_builder', 'gradient_preset', 'github_sponsors', 'buy_me_a_coffee']);
+    const placements = new Set(['generator_card', 'support_section', 'docs_note']);
     window.fpoAnalytics = {
-        track: function (name, context) {
+        track: function (name, context, placement) {
             if (!names.has(name) || !contexts.has(context)) return;
             try {
-                window.gtag('event', name, {
+                const params = {
                     event_source: context,
                     page_location: pageLocation,
                     page_referrer: referrer
-                });
+                };
+                if (name === 'support_click' && placements.has(placement)) {
+                    params.support_placement = placement;
+                }
+                window.gtag('event', name, params);
             } catch (_) { /* Analytics must not interrupt the tool. */ }
         }
     };
     document.addEventListener('click', function (event) {
         const link = event.target.closest('a[data-support-provider]');
-        if (link) window.fpoAnalytics.track('support_click', link.dataset.supportProvider);
+        if (link) window.fpoAnalytics.track('support_click', link.dataset.supportProvider, link.dataset.supportPlacement);
     });
 
     const tag = document.createElement('script');

@@ -51,9 +51,10 @@ test('initialization does not count a generate action; only allowed events are a
 
 test('support click uses only the known provider and handles nested click targets', () => {
     const app = load();
-    app.listeners.click({target: {closest: () => ({dataset: {supportProvider: 'github_sponsors'}})}});
+    app.listeners.click({target: {closest: () => ({dataset: {supportProvider: 'github_sponsors', supportPlacement: 'generator_card'}})}});
     assert.equal(app.calls().at(-1)[1], 'support_click');
     assert.equal(app.calls().at(-1)[2].event_source, 'github_sponsors');
+    assert.equal(app.calls().at(-1)[2].support_placement, 'generator_card');
     app.listeners.click({target: {closest: () => null}});
     assert.equal(app.calls().length, 3);
 });
@@ -62,4 +63,11 @@ test('a failed analytics call does not interrupt an action', () => {
     const app = load();
     app.window.gtag = () => {throw new Error('blocked');};
     assert.doesNotThrow(() => app.window.fpoAnalytics.track('image_generate', 'generator'));
+});
+
+
+test('arbitrary placement values are not sent to GA4', () => {
+    const app = load();
+    app.window.fpoAnalytics.track('support_click', 'github_sponsors', 'private URL');
+    assert.equal(app.calls().at(-1)[2].support_placement, undefined);
 });
