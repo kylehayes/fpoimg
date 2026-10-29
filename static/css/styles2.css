@@ -591,15 +591,48 @@ footer {
 .support-contribute {
     font-size: 0.9rem;
 }
-.support-contribute a,
-.support-prompt a {
+.support-contribute a {
     color: var(--primary);
 }
-.support-prompt {
-    margin-top: 1rem;
-    font-size: 0.9rem;
+/* Keep the support invitation next to the generated URL. */
+.generator-support {
+    scroll-margin-top: 12rem;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid #dce2f2;
+    border-radius: 10px;
+    background: #f0f4ff;
+}
+.generator-support h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+.generator-support p {
     color: #52606d;
-    line-height: 1.6;
+    font-size: 0.95rem;
+}
+.generator-support-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 1rem;
+}
+.generator-support-actions a {
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.generator-support-actions .generator-support-primary {
+    color: white;
+    background: var(--primary);
+    padding: 0.55rem 0.9rem;
+    border-radius: 6px;
+    text-decoration: none;
+}
+.generator-support-primary:hover {
+    background: var(--secondary);
 }
 @media (max-width: 640px) {
     .support-options {
