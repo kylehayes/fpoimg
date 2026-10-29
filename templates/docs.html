@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Placeholder Image API Reference — FPOImg</title>
+  <meta name="description" content="FPOImg API reference: generate free placeholder images by URL with dimensions, captions, colors, gradients, PNG, JPEG, WebP, and SVG.">
+  <link rel="canonical" href="https://fpoimg.com/docs">
+  <link rel="alternate" type="application/json" href="/openapi.json" title="OpenAPI specification">
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #182336; background: #f6f8fc; }
+    body { max-width: 1100px; margin: auto; padding: 2rem 1.25rem; line-height: 1.6; }
+    a { color: #294cc4; } h1, h2, h3 { line-height: 1.3; }
+    h1 { margin-bottom: .5rem; } h2 { margin-top: 0; }
+    article { background: white; border: 1px solid #d9dfeb; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; scroll-margin-top: 1rem; }
+    code { font-size: .9em; overflow-wrap: anywhere; }
+    pre { overflow-x: auto; background: #edf1f8; padding: 1rem; border-radius: 6px; }
+    pre code { white-space: pre-wrap; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: .75rem; border-bottom: 1px solid #d9dfeb; vertical-align: top; }
+    th { background: #edf1f8; } .method { color: #17633c; }
+    .muted { color: #506079; } nav ul { padding-left: 1.25rem; }
+    @media (max-width: 600px) { article { padding: 1rem; } h2 { font-size: 1.25rem; } }
+  </style>
+</head>
+<body>
+  <nav aria-label="Main"><a href="/">FPOImg generator</a> · <a href="/gradients">Gradients</a> · <a href="/colors">Named colors</a></nav>
+  <main>
+    <h1>Placeholder Image API</h1>
+    <p class="muted">API version {{ spec.info.version }} · OpenAPI {{ spec.openapi }}</p>
+    <p>{{ spec.info.description }}</p>
+    <p><a href="/openapi.json">Download the OpenAPI specification</a></p>
+    <h2>Quick start</h2>
+    <p>Use a URL directly in your markup. This creates a 1200 × 630 gradient placeholder with a caption:</p>
+    <pre><code>&lt;img src="https://fpoimg.com/1200x630?gradient=ocean&amp;amp;text=Blog+Cover&amp;amp;dims=false"
+     width="1200" height="630" alt="Blog cover placeholder"&gt;</code></pre>
+    <p>Omit the extension for PNG. For other formats use URLs such as <a href="/400x300.webp?text=Card"><code>/400x300.webp?text=Card</code></a> or <a href="/400x300.svg?gradient=sunset"><code>/400x300.svg?gradient=sunset</code></a>.</p>
+    <nav aria-label="API endpoints">
+      <h2>Endpoints</h2>
+      <ul>{% for path, item in spec.paths.items() %}
+        <li><a href="#{{ item['get'].operationId }}"><code>GET {{ path }}</code> — {{ item['get'].summary }}</a></li>
+      {% endfor %}</ul>
+    </nav>
+    {% for path, item in spec.paths.items() %}
+    {% set operation = item['get'] %}
+    <article id="{{ operation.operationId }}">
+      <h2><span class="method">GET</span> <code>{{ path }}</code></h2>
+      <h3>{{ operation.summary }}</h3>
+      <p>{{ operation.description }}</p>
+      <p>Example: <a href="{{ operation['x-example-url'] }}"><code>https://fpoimg.com{{ operation['x-example-url'] }}</code></a></p>
+      <pre><code>curl 'https://fpoimg.com{{ operation['x-example-url'] }}' --output placeholder</code></pre>
+      <div class="table-scroll">
+        <table>
+          <caption>Parameters for {{ path }}</caption>
+          <thead><tr><th scope="col">Parameter</th><th scope="col">Location</th><th scope="col">Type / default</th><th scope="col">Description</th></tr></thead>
+          <tbody>{% for reference in operation.parameters %}{% set parameter = resolve(reference) %}
+            <tr><td><code>{{ parameter.name }}</code>{% if parameter.required %}<br>Required{% endif %}</td><td>{{ parameter.in }}</td>
+              <td>{{ parameter.schema.type }}{% if 'default' in parameter.schema %}<br>Default: <code>{{ parameter.schema.default | tojson }}</code>{% endif %}</td>
+              <td>{{ parameter.description }}</td></tr>
+          {% endfor %}</tbody>
+        </table>
+      </div>
+      <h3>Responses</h3>
+      <ul>{% for status, reference in operation.responses.items() %}{% set response = resolve(reference) %}
+        <li><strong>{{ status }}</strong> — {{ response.description }}<br><code>{{ response.content.keys() | join(', ') }}</code></li>
+      {% endfor %}</ul>
+    </article>
+    {% endfor %}
+  </main>
+</body>
+</html>

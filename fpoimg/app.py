@@ -25,6 +25,10 @@ def create_app():
     from test_gallery import test_gallery_bp
     app.register_blueprint(test_gallery_bp)
 
+    from .api_spec import api_bp, build_spec
+    app.register_blueprint(api_bp)
+    app.extensions['fpoimg_spec'] = build_spec(app)
+
     # Error handlers
     @app.errorhandler(HTTPException)
     def handle_http_exception(e):
