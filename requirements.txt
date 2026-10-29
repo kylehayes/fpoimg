@@ -6,6 +6,10 @@ MarkupSafe==3.0.2
 itsdangerous==2.2.0
 click==8.1.7
 
+# OpenAPI generation from Flask routes and structured docstrings
+apispec[yaml]==6.10.0
+apispec-webframeworks==1.2.0
+
 # Image generation
 pillow==12.1.1
 
@@ -25,3 +29,4 @@ PyYAML==6.0.3
 # Testing
 pytest==8.3.4
 pytest-cov==6.1.1
+openapi-spec-validator==0.7.2

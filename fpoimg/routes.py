@@ -9,6 +9,7 @@ from .generators.formats import image_to_bytes, FORMAT_MIMETYPES, EXTENSION_MAP
 from .generators.gradient import parse_gradient_param, PRESETS
 from .generators.svg import generate_svg
 from .whats_new import WHATS_NEW
+from .api_spec import image_endpoint
 
 logger = logging.getLogger(__name__)
 
@@ -47,18 +48,42 @@ def colors():
 
 # Square
 @routes_bp.route('/<int:square>')
+@image_endpoint
 def show_image_square(square):
+    """Generate a square PNG.
+    ---
+    get:
+      summary: Generate a square PNG
+      description: Use the same pixel size for width and height.
+      x-example-url: "/300"
+    """
     return _generate_response(square, square)
 
 
 @routes_bp.route('/<int:square>.<ext>')
+@image_endpoint
 def show_image_square_ext(square, ext):
+    """Generate a square in a selected format.
+    ---
+    get:
+      summary: Generate a square in a selected format
+      description: Select PNG, JPEG, WebP, or SVG with a file extension.
+      x-example-url: "/300.webp?text=Avatar"
+    """
     return _generate_response(square, square, fmt=_resolve_format(ext))
 
 
 # Square with one path segment: color or caption
 @routes_bp.route('/<int:square>/<first>')
+@image_endpoint
 def show_image_square_first(square, first):
+    """Generate a square with a path color or caption.
+    ---
+    get:
+      summary: Generate a square with a path color or caption
+      description: Color-like path values select a background; other values set a caption.
+      x-example-url: "/300/steelblue?text=Avatar&text_color=white"
+    """
     if is_color_value(first):
         return _generate_response(square, square, bg_color_override=first)
     return _generate_response(square, square, caption=first)
@@ -66,38 +91,86 @@ def show_image_square_first(square, first):
 
 # Square with two path segments: bg + text color
 @routes_bp.route('/<int:square>/<bg>/<text_c>')
+@image_endpoint
 def show_image_square_colors(square, bg, text_c):
+    """Generate a square with path colors.
+    ---
+    get:
+      summary: Generate a square with path colors
+      description: Set background and text colors in the URL path. Add a caption with the text query parameter.
+      x-example-url: "/300/tomato/white?text=Avatar"
+    """
     return _generate_response(square, square, bg_color_override=bg,
                               text_color_override=text_c)
 
 
 # Width x Height
 @routes_bp.route('/<int:width>x<int:height>')
+@image_endpoint
 def show_image_width_height(width, height):
+    """Generate a rectangular PNG.
+    ---
+    get:
+      summary: Generate a rectangular PNG
+      description: Recommended default endpoint. Customize the image using query parameters.
+      x-example-url: "/800x600?gradient=ocean&text=Blog+Cover&dims=false"
+    """
     return _generate_response(width, height)
 
 
 @routes_bp.route('/<int:width>x<int:height>.<ext>')
+@image_endpoint
 def show_image_width_height_ext(width, height, ext):
+    """Generate a rectangle in a selected format.
+    ---
+    get:
+      summary: Generate a rectangle in a selected format
+      description: Select PNG, JPEG, WebP, or SVG with a file extension.
+      x-example-url: "/800x600.svg?gradient=sunset&text=Hero&dims=false"
+    """
     return _generate_response(width, height, fmt=_resolve_format(ext))
 
 
 # Width x Height with one path segment: color or caption
 @routes_bp.route('/<int:width>x<int:height>/<first>')
+@image_endpoint
 def show_image_width_height_first(width, height, first):
+    """Generate a rectangle with a path color or caption.
+    ---
+    get:
+      summary: Generate a rectangle with a path color or caption
+      description: Color-like path values select a background; other values set a caption. For unambiguous captions prefer the text query parameter.
+      x-example-url: "/400x300/Hello%20World"
+    """
     if is_color_value(first):
         return _generate_response(width, height, bg_color_override=first)
     return _generate_response(width, height, caption=first)
 
 
 @routes_bp.route('/<int:width>x<int:height>.<ext>/<caption>')
+@image_endpoint
 def show_image_width_height_ext_caption(width, height, ext, caption):
+    """Generate an image with a format and path caption.
+    ---
+    get:
+      summary: Generate an image with a format and path caption
+      description: This caption is always treated as text, even when it matches a color name. It overrides the text query parameter.
+      x-example-url: "/400x300.jpg/red?bg_color=navy&text_color=white"
+    """
     return _generate_response(width, height, caption, fmt=_resolve_format(ext))
 
 
 # Width x Height with two path segments: bg + text color
 @routes_bp.route('/<int:width>x<int:height>/<bg>/<text_c>')
+@image_endpoint
 def show_image_width_height_colors(width, height, bg, text_c):
+    """Generate a rectangle with path colors.
+    ---
+    get:
+      summary: Generate a rectangle with path colors
+      description: Set background and text colors in the URL path. A valid gradient replaces the background.
+      x-example-url: "/400x300/tomato/white?text=Card"
+    """
     return _generate_response(width, height, bg_color_override=bg,
                               text_color_override=text_c)
 
