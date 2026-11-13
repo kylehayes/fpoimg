@@ -19,6 +19,16 @@ class TestHomePage:
         assert resp.status_code == 301
         assert resp.location == "/"
 
+    @pytest.mark.parametrize("path", ["/contact", "/contact/"])
+    def test_contact_redirects_to_home_support(self, client, path):
+        resp = client.get(path)
+        assert resp.status_code == 301
+        assert resp.location == "/#support"
+
+        home = client.get(resp.location)
+        assert home.status_code == 200
+        assert b'id="support"' in home.data
+
 
 class TestExamplesPage:
     def test_examples_returns_200(self, client):

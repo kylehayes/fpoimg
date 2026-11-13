@@ -27,6 +27,11 @@ def generator():
     return redirect(url_for('.home'), code=301)
 
 
+@routes_bp.route('/contact', strict_slashes=False)
+def contact():
+    return redirect(url_for('.home', _anchor='support'), code=301)
+
+
 @routes_bp.route('/examples')
 def examples():
     logger.info("Examples page")
