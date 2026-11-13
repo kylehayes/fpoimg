@@ -1,6 +1,6 @@
 """Flask route definitions — thin layer that parses params and delegates."""
 import logging
-from flask import Blueprint, request, render_template, send_file
+from flask import Blueprint, redirect, render_template, request, send_file, url_for
 
 from .utils.colors import parse_color, is_color_value, NAMED_COLORS, COLOR_FAMILIES
 from .utils.params import clamp_dimension, DEFAULT_BG_COLOR, DEFAULT_TEXT_COLOR
@@ -20,6 +20,11 @@ routes_bp = Blueprint('routes', __name__)
 def home():
     logger.info("Home page")
     return render_template('./home2.html')
+
+
+@routes_bp.route('/generator', strict_slashes=False)
+def generator():
+    return redirect(url_for('.home'), code=301)
 
 
 @routes_bp.route('/examples')

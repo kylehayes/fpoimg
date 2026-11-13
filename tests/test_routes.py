@@ -13,6 +13,12 @@ class TestHomePage:
         resp = client.get("/")
         assert b"<html" in resp.data.lower() or b"<!doctype" in resp.data.lower()
 
+    @pytest.mark.parametrize("path", ["/generator", "/generator/"])
+    def test_generator_redirects_to_home(self, client, path):
+        resp = client.get(path)
+        assert resp.status_code == 301
+        assert resp.location == "/"
+
 
 class TestExamplesPage:
     def test_examples_returns_200(self, client):
